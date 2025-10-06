@@ -1,5 +1,5 @@
 pkgname = "ptyxis"
-pkgver = "48.1"
+pkgver = "48.5"
 pkgrel = 0
 build_style = "meson"
 hostmakedepends = [
@@ -9,6 +9,7 @@ hostmakedepends = [
     "gobject-introspection",
     "gtk+3-update-icon-cache",
     "meson",
+    "doxygen",
     "pkgconf",
 ]
 makedepends = [
@@ -27,4 +28,4 @@ url = "https://gitlab.gnome.org/chergert/ptyxis"
 source = (
     f"$(GNOME_SITE)/ptyxis/{pkgver[:-2]}/ptyxis-{pkgver}.tar.xz"
 )
-sha256 = "e71bd6b6a5baedf83cef06e733265498b3f9f516e7efd056585379841652d94f"
+sha256 = "f91f8ebe1bb1aef6bf772a994d6b4f4d0832c28baf6384c27461bbc6af2aad8e"

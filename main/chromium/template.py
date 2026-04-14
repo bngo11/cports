@@ -1,6 +1,6 @@
 pkgname = "chromium"
 # https://chromiumdash.appspot.com/releases?platform=Linux
-pkgver = "142.0.7444.162"
+pkgver = "146.0.7680.164"
 pkgrel = 0
 archs = ["aarch64", "ppc64le", "x86_64"]
 configure_args = [
@@ -35,6 +35,7 @@ configure_args = [
     'rustc_version="0"',
     "symbol_level=1",
     "treat_warnings_as_errors=false",
+    "safe_browsing_use_unrar=false",
     "use_clang_modules=false",
     "use_custom_libcxx=false",
     "use_dwarf5=true",
@@ -65,6 +66,7 @@ hostmakedepends = [
     "python",
     "rust",
     "rust-bindgen",
+    "rust-rustfmt",
 ]
 makedepends = [
     "alsa-lib-devel",
@@ -136,8 +138,15 @@ depends = [
 pkgdesc = "Web browser"
 license = "BSD-3-Clause"
 url = "https://www.chromium.org"
-source = f"https://github.com/chromium-linux-tarballs/chromium-tarballs/releases/download/{pkgver}/chromium-{pkgver}-linux.tar.xz"
-sha256 = "84ea88b8f90bafbcc7516279510608e781e04096ebec8b978c3b968709484d16"
+source = [
+    f"https://github.com/chromium-linux-tarballs/chromium-tarballs/releases/download/{pkgver}/chromium-{pkgver}-linux.tar.xz",
+    "https://registry.npmjs.org/@rollup/wasm-node/-/wasm-node-4.22.4.tgz",
+]
+source_paths = [".", "rollup"]
+sha256 = [
+    "ce684e97c122f2fb0d9ccb691c74702cfd67a458b15259547f7093b5251889dc",
+    "ee49bf67bd9bee869405af78162d028e2af0fcfca80497404f56b1b99f272717",
+]
 debug_level = 1
 tool_flags = {
     "CFLAGS": [
@@ -153,6 +162,10 @@ tool_flags = {
         "-Wno-deprecated-declarations",
         "-Wno-sign-compare",
         "-Wno-shorten-64-to-32",
+        # started crashing in blink and skia with 145.x due to unsafe memcpy
+        # we have a similar issue in webkit with skia, maybe figure it out
+        # there first...
+        "-U_FORTIFY_SOURCE",
     ],
 }
 file_modes = {
@@ -176,6 +189,11 @@ def post_patch(self):
 
     self.cp(self.files_path / "unbundle.sh", ".")
     self.cp(self.files_path / "pp-data.sh", ".")
+
+    self.rm(
+        "third_party/devtools-frontend/src/node_modules/rollup", recursive=True
+    )
+    self.mv("rollup", "third_party/devtools-frontend/src/node_modules")
 
 
 def configure(self):

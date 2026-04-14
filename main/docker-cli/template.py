@@ -1,6 +1,6 @@
 pkgname = "docker-cli"
-pkgver = "28.3.2"
-pkgrel = 2
+pkgver = "29.2.1"
+pkgrel = 0
 build_style = "makefile"
 _commit = "ce1223035ac3ab8922717092e63a184cf67b493d"
 make_build_target = "dynbinary"
@@ -15,7 +15,7 @@ pkgdesc = "Container and image management tool"
 license = "Apache-2.0"
 url = "https://docker.com"
 source = f"https://github.com/docker/cli/archive/v{pkgver}.tar.gz"
-sha256 = "b65cd415e63be23fcaa63107bc47a762173a06c84fb78b1575edc5443bb39867"
+sha256 = "33a5c92198a2e57a6012c6f7938d69c72adf751584bc0c98d8d91e555b1c8f0a"
 env = {
     "AUTO_GOPATH": "1",
     "GITCOMMIT": _commit,
@@ -24,6 +24,9 @@ env = {
 }
 # nah
 options = ["!check"]
+
+if self.profile().arch == "loongarch64":
+    broken = "PIC linking issues"
 
 
 def prepare(self):
@@ -36,7 +39,10 @@ def init_build(self):
 
     self.env["GOPATH"] = str(self.chroot_cwd)
     self.env["GOBIN"] = str(self.chroot_cwd / "bin")
-    self.env["CGO_ENABLED"] = "1"
+    if self.profile().arch == "loongarch64":
+        self.env["CGO_ENABLED"] = "0"
+    else:
+        self.env["CGO_ENABLED"] = "1"
     self.env.update(golang.get_go_env(self))
 
 

@@ -1,6 +1,6 @@
 pkgname = "clang-rt-crt-cross"
-_musl_ver = "1.2.5"
-pkgver = "21.1.4"
+_musl_ver = "1.2.6"
+pkgver = "22.1.3"
 pkgrel = 0
 build_style = "cmake"
 configure_args = [
@@ -31,7 +31,6 @@ configure_args = [
     "-DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=ON",
 ]
 hostmakedepends = [
-    "clang-tools-extra",
     "cmake",
     "llvm-devel",
     "ninja",
@@ -48,8 +47,8 @@ source = [
 ]
 source_paths = [".", "musl"]
 sha256 = [
-    "a01ad7e5167780c945871d75c0413081d12067607a6de5cf71dc3e8d1a82112c",
-    "a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4",
+    "2488c33a959eafba1c44f253e5bbe7ac958eb53fa626298a3a5f4b87373767cd",
+    "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
 ]
 # crosstoolchain
 options = ["!cross", "!check", "!lto", "empty"]

@@ -1,5 +1,5 @@
 pkgname = "rust-bootstrap"
-pkgver = "1.90.0"
+pkgver = "1.93.0"
 pkgrel = 0
 # satisfy revdeps
 makedepends = ["zlib-ng-compat", "ncurses-libs", "zstd"]
@@ -18,38 +18,38 @@ options = ["!strip"]
 match self.profile().arch:
     case "aarch64":
         sha256 = [
-            "40944a144ecce8a70919623ac25c19b2ef4da3a59349d65ae8ef32dc39e77c1c",
-            "6875a53259f6d79c63fe4a90b073e6a296d70dea22460737ef7f901f22419496",
+            "f525efe0f9fe418d976b1447ec5ff6c075f7d32756f8b7ede258e4384ecbada3",
+            "6cc88202832f6d003c191a45ede4196ef43cec05d763cec5cf69f33694e75a93",
         ]
     case "loongarch64":
         sha256 = [
-            "5ea8c79a0f3c3560a1d53ead275e174ca66d473e13ce962011bdf9bec7ff2e02",
-            "2c5aae092ffb4c1f018410e30d13f0618c2137eb7091067448bef02fb9a1267d",
+            "aa22a5d3dee1c2a0194cb3a04e32f6b0c3e5bbaa730e9f82dff716e7b2c836dd",
+            "bd6cd31f41f2ba03d2458ee95a0501f9cbef4a5e3aabac177cf0f2431c18522f",
         ]
     case "ppc64le":
         sha256 = [
-            "a754f90fdfd0c7e2da1a6ee52b9b54ad557362017a1d18590a94eccd54587b62",
-            "112cc980691915ff49162e23966a7a820aedb903e558b64caa78490ec99510a9",
+            "dfb4007a93577f52d8aaba559a4eb1d5a354d5c3d7c694dee6f30b0d6dae8c19",
+            "7a6a4bfcf425cfc3116260235545e1fe6c037a8fb6a3dc9c320f071c0595eb69",
         ]
     case "ppc64":
         sha256 = [
-            "05b6a0b32042b6e261a5f84dbfddbc521a1baf9a19c32e26a61b1f8cffcb4164",
-            "402417e6f54fd8aa508db1f07b555b3cbe79f5097d901c88021325d1a90b1365",
+            "61bee27932b6bad31edaa9806353d5bb1b1b88dd95d97986f4f6638963d4191e",
+            "0d58ef934ea8a4555cdd2d3f20781d7f3c71279b71b08ee0bcc350954858919d",
         ]
     case "ppc":
         sha256 = [
-            "8deb6f91e847a495c2b5ee5bb02afae0ff210a753848a5ad7e7bf65ad50274bc",
-            "3cadb58d448a4b26da94529cbc3e7cbd73e605144ff5b2bf0e2dbe3a99686e52",
+            "58124a1a2ffd24b957132fd6a2e635aa4a0be010a21bf2ccd5516b1abc6ce012",
+            "72670f1e5849582c5cecb26613ef6ee7fc5c283ea1c5005244f2cea284b5fe96",
         ]
     case "riscv64":
         sha256 = [
-            "72f6902372c809ee6564f252278678c3d8393ef3abe578a7fd10bf9182fd8aea",
-            "a432728db74eead923069bb9f934756f526470813e21a60822263c2d916f8d95",
+            "aaf905bf3c81c37e428ca2f66935d0d49f22d418159b20159bbccd1fac71ccff",
+            "a358010bbf48a1caf67da82e0ddc8135427e98c10400f10292f090ec1921874b",
         ]
     case "x86_64":
         sha256 = [
-            "9dadc11718f9d4c638ed5ebebee2b505699476b15b1e1f260446d169abba4bca",
-            "1533e9980331933c1ccc0eefebdd6a4d90f00dfc682e46f08c4298ae88046412",
+            "55a5f97881988b38182e1c8bdd092ccae299430bd5745a053670ed7021b1922f",
+            "72d30ae145cb836b45d746084804bed3370fd258dfc4938929bb1c98ceb852bb",
         ]
     case _:
         broken = f"not yet built for {self.profile().arch}"
@@ -66,5 +66,7 @@ def install(self):
     # remove rust copies of llvm tools
     trip = self.profile().triplet
     self.uninstall(f"usr/lib/rustlib/{trip}/bin")
+    # whatever
+    self.uninstall("usr/etc")
     # licenses
     self.install_license(f"rustc-{pkgver}-{self.profile().triplet}/LICENSE-MIT")

@@ -1,10 +1,10 @@
 pkgname = "libftdi1"
 pkgver = "1.5"
-pkgrel = 7
+pkgrel = 8
 build_style = "cmake"
 configure_args = ["-DCMAKE_POLICY_VERSION_MINIMUM=3.5", "-DLIB_SUFFIX="]
 hostmakedepends = ["cmake", "ninja", "pkgconf"]
-makedepends = ["libconfuse-devel", "libusb-devel"]
+makedepends = ["libconfuse-devel", "libusb-bootstrap"]
 checkdepends = ["boost-devel"]
 pkgdesc = "Library for communicating with FTDI USB devices"
 license = "LGPL-2.1-or-later AND GPL-2.0-only"

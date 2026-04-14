@@ -1,6 +1,6 @@
 pkgname = "libquotient"
 pkgver = "0.9.3"
-pkgrel = 4
+pkgrel = 6
 build_style = "cmake"
 configure_args = [
     "-DBUILD_SHARED_LIBS=ON",

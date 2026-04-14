@@ -1,5 +1,5 @@
 pkgname = "jj"
-pkgver = "0.34.0"
+pkgver = "0.38.0"
 pkgrel = 0
 build_style = "cargo"
 prepare_after_patch = True
@@ -10,9 +10,12 @@ pkgdesc = "Git-compatible VCS frontend"
 license = "Apache-2.0"
 url = "https://martinvonz.github.io/jj"
 source = f"https://github.com/martinvonz/jj/archive/refs/tags/v{pkgver}.tar.gz"
-sha256 = "9e8da8ec2951ec026a2afe956ad904bb691c050040f53c3e47cfe346ead2907e"
+sha256 = "f28e280c01abb11aa9ff5ae7a35df3e9822fd37a013b6c1d79d1453a5f21f5ad"
 # generates completions with host binary
 options = ["!cross"]
+
+if self.profile().arch in ["loongarch64"]:
+    broken = "outdated nix crate, can't update"
 
 
 def post_prepare(self):

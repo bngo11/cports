@@ -1,5 +1,5 @@
 pkgname = "kmail"
-pkgver = "25.08.3"
+pkgver = "25.12.2"
 pkgrel = 0
 build_style = "cmake"
 make_check_args = ["-E", "akonadi-sqlite-.*"]
@@ -72,4 +72,4 @@ pkgdesc = "KDE Mail Client"
 license = "LGPL-2.0-or-later AND GPL-2.0-only"
 url = "https://apps.kde.org/kmail2"
 source = f"$(KDE_SITE)/release-service/{pkgver}/src/kmail-{pkgver}.tar.xz"
-sha256 = "a544e87ce2fadf4dbaa099c018a19e593bbb802e0a993016bc3e914edd6a91f4"
+sha256 = "e12ae3d3f3fea717a8e1b6f1585de54a7ddde6df5c2dd835a6128921e94d5b74"

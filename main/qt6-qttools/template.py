@@ -1,5 +1,5 @@
 pkgname = "qt6-qttools"
-pkgver = "6.10.0"
+pkgver = "6.10.2"
 pkgrel = 1
 build_style = "cmake"
 configure_args = [
@@ -11,7 +11,6 @@ configure_args = [
     "-DQT_FEATURE_distancefieldgenerator=ON",
 ]
 hostmakedepends = [
-    "clang-tools-extra",
     "cmake",
     "ninja",
     "perl",
@@ -21,7 +20,6 @@ hostmakedepends = [
 ]
 makedepends = [
     "clang-devel",
-    "clang-tools-extra",
     "llvm-devel",
     "qt6-qtbase-private-devel",
     "qt6-qtdeclarative-devel",
@@ -33,7 +31,7 @@ license = (
 )
 url = "https://www.qt.io"
 source = f"https://download.qt.io/official_releases/qt/{pkgver[:-2]}/{pkgver}/submodules/qttools-everywhere-src-{pkgver}.tar.xz"
-sha256 = "d86d5098cf3e3e599f37e18df477e65908fc8f036e10ea731b3469ec4fdbd02a"
+sha256 = "1e3d2c07c1fd76d2425c6eaeeaa62ffaff5f79210c4e1a5bc2a6a9db668d5b24"
 # FIXME
 hardening = ["!int"]
 # TODO

@@ -1,7 +1,7 @@
 # keep pkgver AND pkgrel in sync with qt6-qtwayland
 # rebuild qt6-qtbase-private-devel consumers on upgrades
 pkgname = "qt6-qtbase"
-pkgver = "6.10.0"
+pkgver = "6.10.2"
 pkgrel = 0
 build_style = "cmake"
 configure_args = [
@@ -75,7 +75,8 @@ license = (
 )
 url = "https://www.qt.io"
 source = f"https://download.qt.io/official_releases/qt/{pkgver[:-2]}/{pkgver}/submodules/qtbase-everywhere-src-{pkgver}.tar.xz"
-sha256 = "ead4623bcb54a32257c5b3e3a5aec6d16ec96f4cda58d2e003f5a0c16f72046d"
+sha256 = "aeb78d29291a2b5fd53cb55950f8f5065b4978c25fb1d77f627d695ab9adf21e"
+tool_flags = {"LDFLAGS": ["-Wl,-z,stack-size=0x200000"]}
 # FIXME
 hardening = ["!int"]
 # TODO

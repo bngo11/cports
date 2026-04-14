@@ -1,6 +1,6 @@
 pkgname = "nushell"
-pkgver = "0.108.0"
-pkgrel = 1
+pkgver = "0.110.0"
+pkgrel = 0
 build_style = "cargo"
 make_build_args = [
     "--no-default-features",
@@ -23,7 +23,7 @@ pkgdesc = "Shell with a focus on structured data"
 license = "MIT"
 url = "https://www.nushell.sh"
 source = f"https://github.com/nushell/nushell/archive/refs/tags/{pkgver}.tar.gz"
-sha256 = "5995c211411ad1d5dd7da904b9db238a543958675b9e45f5e84fbdf217499eee"
+sha256 = "e4c95f743cea3d985ab90e03fd35707a46eef926d407ed363f994155c1ca5055"
 _plugins = [
     "polars",
     "formats",

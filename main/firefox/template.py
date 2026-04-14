@@ -1,6 +1,6 @@
 pkgname = "firefox"
-pkgver = "145.0"
-pkgrel = 1
+pkgver = "149.0"
+pkgrel = 0
 hostmakedepends = [
     "automake",
     "cargo",
@@ -63,7 +63,7 @@ pkgdesc = "Mozilla Firefox web browser"
 license = "GPL-3.0-only AND LGPL-2.1-only AND LGPL-3.0-only AND MPL-2.0"
 url = "https://www.mozilla.org/firefox"
 source = f"$(MOZILLA_SITE)/firefox/releases/{pkgver}/source/firefox-{pkgver}.source.tar.xz"
-sha256 = "eb0828db0e942ad345c725e2cbf2ed3b90d23771b054b6db0ded57cfa10b8c9c"
+sha256 = "b861fdee999d9b6404e1e865d6f707c41b4bded1b5ea62affc176288c1484b8a"
 debug_level = 1  # defatten, especially with LTO
 tool_flags = {
     "LDFLAGS": ["-Wl,-rpath=/usr/lib/firefox", "-Wl,-z,stack-size=2097152"]
@@ -74,7 +74,7 @@ env = {
     "MOZILLA_OFFICIAL": "1",
     "USE_SHORT_LIBNAME": "1",
     "MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE": "system",
-    "MOZ_APP_REMOTINGNAME": "Firefox",
+    "MOZ_APP_REMOTINGNAME": "firefox",
     "MOZ_NOSPAM": "1",
     # firefox checks for it by calling --help
     "CBUILD_BYPASS_STRIP_WRAPPER": "1",
@@ -90,6 +90,9 @@ if self.profile().endian == "big":
 # crashes compiler in gl.c
 if self.profile().arch == "riscv64":
     tool_flags["CXXFLAGS"] = ["-U_FORTIFY_SOURCE"]
+elif self.profile().arch == "ppc64le":
+    # early profile build libxul takes 7 hours to link for some reason
+    options += ["eepy"]
 
 
 def post_extract(self):

@@ -860,7 +860,9 @@ Keep in mind that default values may be overridden by build styles.
   constraints (e.g. `foo<=1.0-r1`) and conflicts (`!foo`). You can also
   specify dependencies on `pkgconf` files (`pc:foo`), executable commands
   (`cmd:foo`) and shared libraries (`so:libfoo.so.1`, though this is not
-  recommended), as well as virtual packages (`virtual:foo`). Any virtual
+  recommended), as well as virtual packages (`virtual:foo`). It is also
+  possible to specify SONAME dependencies tracked via `makedepends`, e.g.
+  like `soname:libfoo.so` which will resolve to `so:libfoo.so.N`. Any virtual
   dependencies must explicitly specify a non-virtual provider, which is not
   included in the final package metadata, but is used at build-time to check
   availability of at least one provider; you can specify that with `!` after
@@ -1304,8 +1306,8 @@ Default values:
 * `make_dir` = `build`
 
 Sets `configure`, `build`, `check`, `install`. They are wrappers
-around the `cmake` utility module API `configure`, `build`, `install`,
-and `ctest` respectively.
+around the `cmake` utility module API `configure`, `build`, `ctest`, and 
+`install` respectively.
 
 The `self.make_dir` value is passed as `build_dir`. The `self.configure_args`,
 `self.make_build_args`, `self.make_check_args`, `self.make_install_args` values
@@ -1755,6 +1757,16 @@ The filename is scanned for version. For example, `libfoo.so.1.2.3` with
 is provided in the filename, `0` is used. If a version is found, it must
 validate as an `apk` version number.
 
+Explicit runtime dependencies specified as `soname:libfoo.so` will get
+resolved from installed devel package symlinks to their `so:libfoo.so.N`
+(or whatever `SONAME` it has) form. By default, they are assumed to be
+in `/usr/lib`. For resolution of libraries in other locations, you can
+specify `soname:/absolute/path/to/libfoo.so`. This is a convenience feature
+that utilizes partial scanning, so that templates do not have to mention
+explicit `SONAME` for runtime dependencies that are dynamically opened
+or otherwise cannot be scanned (as the `SONAME` can change and easily be
+forgotten).
+
 The package is then scanned for `.pc` files to be provided. Only two paths
 are considered, `usr/lib/pkgconfig` and `usr/share/pkgconfig`. IT is an error
 for the same `.pc` file to exist in both paths. The `.pc` files are scanned
@@ -1816,6 +1828,11 @@ the template including for subpackages:
   there are any strippable debug symbols. By setting this to `false`,
   you can disable passing of debug options to the compiler, as well as
   prevent generation of debug packages.
+* `eepy` *(false)* Sometimes a build gets low energy and doesn't output
+  anything in a few hours. That does not mean it will not finish however,
+  just gotta give it time. Apply to templates that are known to take
+  more than 4 hours to make cbuild meow to stdout every hour and prevent
+  our infrastructure from terminating the build.
 * `check` *(true)* By disabling this you can ensure the `check` phase
   is never run, even if enabled and enforced in the build system. A
   reason should always be provided as a comment above the `options`
@@ -1922,7 +1939,7 @@ for subpackages separately if needed:
   linter may not be exhaustive as the SPDX license data do not specify
   whether a license should be distributed or not.
 * `strip` *(true)* If disabled, ELF files in this package will not be
-  stripped, which means debug symbols will remain where thesy are and
+  stripped, which means debug symbols will remain where they are and
   debug package will not be generated.
 * `ltostrip` *(false)* By default, `lto` being enabled disables stripping
   of static archives, as LTO archives consist of bitcode and not object

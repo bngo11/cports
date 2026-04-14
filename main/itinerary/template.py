@@ -1,6 +1,6 @@
 pkgname = "itinerary"
-pkgver = "25.08.3"
-pkgrel = 0
+pkgver = "25.12.2"
+pkgrel = 1
 build_style = "cmake"
 # fails with no output
 make_check_args = ["-E", "itinerary-self-test"]
@@ -36,6 +36,7 @@ makedepends = [
     "libquotient-devel",
     "networkmanager-qt-devel",
     "prison-devel",
+    "qcoro-devel",
     "qqc2-desktop-style-devel",
     "qt6-qtbase-private-devel",  # qjson_p.h
     "qt6-qtdeclarative-devel",
@@ -56,4 +57,4 @@ pkgdesc = "KDE digital travel assistant"
 license = "LGPL-2.0-or-later"
 url = "https://apps.kde.org/itinerary"
 source = f"$(KDE_SITE)/release-service/{pkgver}/src/itinerary-{pkgver}.tar.xz"
-sha256 = "28f8cef47f949ce48326f6d2882d58c1c797a6e324c51f5d3510e7db22161f87"
+sha256 = "b803c7a0bdbe3575961572a5c9310f8ab06f393fa794480a236b9542cc3c32bc"

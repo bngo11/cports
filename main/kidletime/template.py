@@ -1,5 +1,5 @@
 pkgname = "kidletime"
-pkgver = "6.19.0"
+pkgver = "6.23.0"
 pkgrel = 0
 build_style = "cmake"
 hostmakedepends = ["cmake", "extra-cmake-modules", "ninja", "pkgconf"]
@@ -14,7 +14,7 @@ pkgdesc = "KDE Idle time reporting of user and system"
 license = "LGPL-2.0-only"
 url = "https://api.kde.org/frameworks/kidletime/html"
 source = f"$(KDE_SITE)/frameworks/{pkgver[: pkgver.rfind('.')]}/kidletime-{pkgver}.tar.xz"
-sha256 = "df82c386fef8dc98ea5976ffef1da11539c1914d21b773ce62f4533b5ad16f65"
+sha256 = "4d5e9086d260c9550f1d732d2f6481d34517ba9f571f2e7d76ed9887adb2c97b"
 hardening = ["vis"]
 
 

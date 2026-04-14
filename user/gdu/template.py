@@ -1,6 +1,6 @@
 pkgname = "gdu"
-pkgver = "5.31.0"
-pkgrel = 2
+pkgver = "5.35.0"
+pkgrel = 0
 build_style = "go"
 make_build_args = [
     f"-ldflags=-X github.com/dundee/gdu/v5/build.Version={pkgver}",
@@ -18,7 +18,7 @@ pkgdesc = "Disk usage analyzer"
 license = "MIT"
 url = "https://github.com/dundee/gdu"
 source = f"{url}/archive/refs/tags/v{pkgver}.tar.gz"
-sha256 = "e3727680ea346ce86e63d4c97841cbc5e17c6d8e58fac8b8e9886e3339214e9d"
+sha256 = "2c0e4fe412a828e1c0f414f7c230b994e44356c4753c3546c67e8178db500535"
 # check may be disabled
 options = []
 

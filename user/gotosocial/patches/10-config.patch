@@ -1,7 +1,5 @@
-diff --git i/example/config.yaml w/example/config.yaml
-index 25bb09068..c0f608de9 100644
---- i/example/config.yaml
-+++ w/example/config.yaml
+--- a/example/config.yaml
++++ b/example/config.yaml
 @@ -167,17 +167,17 @@ db-type: "sqlite"
  # If the file doesn't exist at the specified path, it will be created.
  # If just a filename is provided (no directory) then the database will be created in the same directory
@@ -21,7 +19,7 @@ index 25bb09068..c0f608de9 100644
  
  # String. Username for postgres database connection.
  # Examples: ["mydbuser","postgres","gotosocial"]
-@@ -269,45 +269,45 @@ db-sqlite-cache-size: "8MiB"
+@@ -269,17 +269,17 @@ db-sqlite-cache-size: "8MiB"
  # See: https://www.sqlite.org/pragma.html#pragma_busy_timeout
  # Examples: ["0s", "1s", "30s", "1m", "5m"]
  # Default: "30m"
@@ -36,16 +34,11 @@ index 25bb09068..c0f608de9 100644
  # Default: ""
  db-postgres-connection-string: ""
  
+ # GoToSocial cache
+ # configuration opts.
  cache:
-   # cache.memory-target sets a target limit that
-   # the application will try to keep it's caches
-   # within. This is based on estimated sizes of
-   # in-memory objects, and so NOT AT ALL EXACT.
-   # Examples: ["100MiB", "200MiB", "500MiB", "1GiB"]
-   # Default: "100MiB"
-   memory-target: "100MiB"
  
- ######################
+@@ -339,22 +339,22 @@ cache:
  ##### WEB CONFIG #####
  ######################
  
@@ -70,7 +63,7 @@ index 25bb09068..c0f608de9 100644
  # Config pertaining to instance federation settings, pages to hide/expose, etc.
  
  # Array of string. BCP47 language tags to indicate preferred languages of users on this instance.
-@@ -740,17 +740,17 @@ media-cleanup-every: "24h"
+@@ -787,17 +787,17 @@ media-cleanup-every: "24h"
  storage-backend: "local"
  
  # String. Directory to use as a base path for storing files.
@@ -89,7 +82,7 @@ index 25bb09068..c0f608de9 100644
  # If you are using Scaleways object storage, please remove the "bucket name" from the endpoint address
  # Default: ""
  storage-s3-endpoint: ""
-@@ -903,17 +903,17 @@ letsencrypt-enabled: false
+@@ -950,17 +950,17 @@ letsencrypt-enabled: false
  letsencrypt-port: 80
  
  # String. Directory in which to store LetsEncrypt certificates.

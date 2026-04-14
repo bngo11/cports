@@ -1,5 +1,5 @@
 pkgname = "libexpat"
-pkgver = "2.7.3"
+pkgver = "2.7.5"
 pkgrel = 0
 build_style = "gnu_configure"
 configure_args = ["--without-examples"]
@@ -10,7 +10,7 @@ pkgdesc = "XML parser library written in C"
 license = "MIT"
 url = "https://libexpat.github.io"
 source = f"https://github.com/libexpat/libexpat/releases/download/R_{pkgver.replace('.', '_')}/expat-{pkgver}.tar.xz"
-sha256 = "71df8f40706a7bb0a80a5367079ea75d91da4f8c65c58ec59bcdfbf7decdab9f"
+sha256 = "1032dfef4ff17f70464827daa28369b20f6584d108bc36f17ab1676e1edd2f91"
 # CFI: crash reproducible e.g. with graphene build
 hardening = ["vis", "!cfi"]
 

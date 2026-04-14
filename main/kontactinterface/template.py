@@ -1,6 +1,6 @@
 pkgname = "kontactinterface"
-pkgver = "25.08.3"
-pkgrel = 0
+pkgver = "25.12.2"
+pkgrel = 1
 build_style = "cmake"
 hostmakedepends = [
     "cmake",
@@ -24,7 +24,7 @@ url = "https://api.kde.org/kdepim/kontactinterface/html"
 source = (
     f"$(KDE_SITE)/release-service/{pkgver}/src/kontactinterface-{pkgver}.tar.xz"
 )
-sha256 = "7b59d03807afbe892ed00e7c226fd87ede8ca7e3a777a11c228698b3d8059788"
+sha256 = "68731a6d3a82c85d3820eb8af94c9dd84f5ab0281767ad7f3506336fd42ef463"
 
 
 @subpackage("kontactinterface-devel")

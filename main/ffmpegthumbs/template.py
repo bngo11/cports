@@ -1,5 +1,5 @@
 pkgname = "ffmpegthumbs"
-pkgver = "25.08.3"
+pkgver = "25.12.2"
 pkgrel = 0
 build_style = "cmake"
 configure_args = ["-DBUILD_WITH_QT6=ON"]
@@ -22,5 +22,5 @@ url = "https://apps.kde.org/ffmpegthumbs"
 source = (
     f"$(KDE_SITE)/release-service/{pkgver}/src/ffmpegthumbs-{pkgver}.tar.xz"
 )
-sha256 = "84ecd131a50799815f414522fc1270c56e0ee45bbfaf96f9e1d2c9278dc84962"
+sha256 = "18059809baa8d2525b20988f9176d010ae8758703917c6cafd8199be965bc446"
 hardening = ["vis"]

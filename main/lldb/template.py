@@ -1,5 +1,5 @@
 pkgname = "lldb"
-pkgver = "21.1.4"
+pkgver = "22.1.3"
 pkgrel = 0
 archs = ["aarch64", "loongarch64", "ppc64le", "ppc64", "riscv64", "x86_64"]
 build_style = "cmake"
@@ -10,7 +10,6 @@ configure_args = [
     "-DLLDB_ENABLE_LIBEDIT=ON",
 ]
 hostmakedepends = [
-    "clang-tools-extra",
     "cmake",
     "ninja",
     "pkgconf",
@@ -32,24 +31,15 @@ makedepends = [
 pkgdesc = "LLVM debugger"
 license = "Apache-2.0 WITH LLVM-exception AND NCSA"
 url = "https://llvm.org"
-source = [
-    f"https://github.com/llvm/llvm-project/releases/download/llvmorg-{pkgver}/lldb-{pkgver}.src.tar.xz",
-    f"https://github.com/llvm/llvm-project/releases/download/llvmorg-{pkgver}/cmake-{pkgver}.src.tar.xz",
-]
-source_paths = [".", "llvm-cmake"]
-sha256 = [
-    "c47b0dd6cdac071d229fd272091cdb0d20cf324e3787e12669c7cf2515381e78",
-    "f4316d84a862ba3023ca1d26bd9c6a995516b4fa028b6fb329d22e24cc6d235e",
-]
+source = f"https://github.com/llvm/llvm-project/releases/download/llvmorg-{pkgver}/llvm-project-{pkgver}.src.tar.xz"
+sha256 = "2488c33a959eafba1c44f253e5bbe7ac958eb53fa626298a3a5f4b87373767cd"
 # tests are not enabled
 options = ["!check"]
 
+cmake_dir = "lldb"
+
 
 def init_configure(self):
-    self.configure_args += [
-        f"-DLLVM_COMMON_CMAKE_UTILS={self.chroot_cwd}/llvm-cmake",
-    ]
-
     if self.profile().cross:
         self.configure_args += [
             "-DLLDB_TABLEGEN="

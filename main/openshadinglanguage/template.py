@@ -1,6 +1,6 @@
 pkgname = "openshadinglanguage"
-pkgver = "1.14.7.0"
-pkgrel = 3
+pkgver = "1.15.3.0"
+pkgrel = 1
 build_style = "cmake"
 configure_args = [
     "-DCMAKE_CXX_STANDARD=17",
@@ -50,7 +50,7 @@ pkgdesc = "Shading language library for renderers"
 license = "BSD-3-Clause"
 url = "https://github.com/AcademySoftwareFoundation/OpenShadingLanguage"
 source = f"{url}/archive/refs/tags/v{pkgver}.tar.gz"
-sha256 = "c4c2ddd3b537cd3a90d50fdd0753614fa24100698d5632b9f1108bd8b505e56c"
+sha256 = "d11f14c7bd40ffe37e3a0e4739352a1f2b230517aad60669b953ff497ab42572"
 # set in rel
 tool_flags = {
     "CFLAGS": ["-DNDEBUG", "-D_LARGEFILE64_SOURCE"],

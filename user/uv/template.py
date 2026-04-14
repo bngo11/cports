@@ -1,5 +1,5 @@
 pkgname = "uv"
-pkgver = "0.9.5"
+pkgver = "0.10.6"
 pkgrel = 0
 build_style = "python_pep517"
 hostmakedepends = [
@@ -18,7 +18,7 @@ pkgdesc = "Python package installer"
 license = "Apache-2.0 OR MIT"
 url = "https://github.com/astral-sh/uv"
 source = f"{url}/archive/refs/tags/{pkgver}.tar.gz"
-sha256 = "9fd1dd030b37b51dcf79b582ea77a911eeb4015a00669bd3047d3b6adea37ba8"
+sha256 = "ff7a46682d2f3844fc80277384e77ed1699e250a8163c9b67c1e6998135ee0e4"
 # too many of them need net
 # completions with host bin
 options = ["!check", "!cross"]
@@ -29,16 +29,6 @@ if self.profile().wordsize == 32:
 
 def prepare(self):
     from cbuild.util import cargo
-
-    self.do(
-        "cargo",
-        "update",
-        "--package",
-        "libc",
-        "--precise",
-        "0.2.174",
-        allow_network=True,
-    )
 
     cargo.Cargo(self).vendor()
 

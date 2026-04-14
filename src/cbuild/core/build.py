@@ -8,6 +8,7 @@ import importlib
 import os
 import pty
 import sys
+import select
 import shutil
 import stat
 import termios
@@ -45,6 +46,7 @@ def redir_log(pkg):
     # child will do the logging for us through a pipe or pty
     prd, prw = None, None
     colors = logger.get().use_colors
+    eepy = pkg.options["eepy"]
     is_pty = False
     try:
         # use a pipe if colors are suppressed, no need for pty
@@ -71,14 +73,31 @@ def redir_log(pkg):
     if fpid == 0:
         os.close(prw)
         try:
+            # use a buffer so we don't keep allocating memory
             rarr = [bytearray(8192)]
+            # also set up a poll object to wait for data to read
+            pl = select.poll()
+            pl.register(prd, select.POLLIN | select.POLLHUP)
+            # we'll keep adding to this, if an hour without output
+            # elapses, we'll meow to the output
+            timer = 0
             while True:
+                plist = pl.poll(10000)
+                if len(plist) == 0:
+                    timer += 10
+                    if eepy and timer >= 3600:
+                        # proper timeout reached, meow
+                        os.write(1, b"meow\n")
+                        timer = 0
+                    continue
+                if (plist[0][1] & select.POLLHUP) != 0:
+                    # end the logigng process...
+                    break
                 # do this on each loop as the terminal may resize
                 sync_winsize(prd, is_pty)
                 rlen = os.readv(prd, rarr)
-                if rlen == 0:
-                    break
                 os.write(1, rarr[0][0:rlen])
+                timer = 0
         finally:
             # raw exit (no exception) since we forked
             # don't want to propagate back to the outside
@@ -130,7 +149,11 @@ def register_hooks():
                         f"\f[red]Hook '{stepn}/{f.stem}' does not have an entry point."
                     )
                     raise Exception()
-                hooks[stepn].append((modh.invoke, f.stem))
+                if hasattr(modh, "redir_log"):
+                    do_redir = modh.redir_log()
+                else:
+                    do_redir = True
+                hooks[stepn].append((modh.invoke, f.stem, do_redir))
             hooks[stepn].sort(key=lambda v: v[1])
 
 
@@ -149,7 +172,7 @@ def _restricted_importer(name, globals=None, locals=None, fromlist=(), level=0):
     return importlib.__import__(name, globals, locals, fromlist, level)
 
 
-def run_pkg_func(pkg, func, funcn=None, desc=None, on_subpkg=False):
+def run_pkg_func(pkg, func, funcn=None, desc=None, on_subpkg=False, redir=True):
     if not funcn:
         if not hasattr(pkg, func):
             return False
@@ -158,7 +181,8 @@ def run_pkg_func(pkg, func, funcn=None, desc=None, on_subpkg=False):
     if not desc:
         desc = funcn
     pkg.log(f"running \f[cyan]{desc}\f[]\f[bold]...")
-    fpid, oldout, olderr = redir_log(pkg)
+    if redir:
+        fpid, oldout, olderr = redir_log(pkg)
     oldimp = builtins.__import__
     builtins.__import__ = _restricted_importer
     try:
@@ -168,7 +192,8 @@ def run_pkg_func(pkg, func, funcn=None, desc=None, on_subpkg=False):
             func(pkg)
     finally:
         builtins.__import__ = oldimp
-        unredir_log(pkg, fpid, oldout, olderr)
+        if redir:
+            unredir_log(pkg, fpid, oldout, olderr)
     return True
 
 
@@ -179,6 +204,7 @@ def call_pkg_hooks(pkg, stepn):
             f[0],
             f"{stepn}_{f[1]}",
             f"{stepn}\f[]\f[bold] hook: \f[orange]{f[1]}",
+            redir=f[2],
         )
 
 

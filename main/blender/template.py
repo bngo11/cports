@@ -1,6 +1,6 @@
 pkgname = "blender"
-pkgver = "4.5.4"
-pkgrel = 1
+pkgver = "5.0.1"
+pkgrel = 2
 build_style = "cmake"
 configure_args = [
     "-DCMAKE_BUILD_TYPE=Release",
@@ -29,6 +29,7 @@ hostmakedepends = [
     "pkgconf",
 ]
 makedepends = [
+    "alembic-devel",
     "boost-devel",
     "clang-devel",
     "eigen",
@@ -74,7 +75,7 @@ pkgdesc = "3D creation suite"
 license = "GPL-2.0-or-later"
 url = "https://www.blender.org"
 source = f"https://download.blender.org/source/blender-{pkgver}.tar.xz"
-sha256 = "ea744e06a39265eb6d914fb57364ad357e709c90738f2729f1d480ba3fe8d805"
+sha256 = "0077a41f59843433154fdf2d8aeb6c43f6bf6951cd46987305e67f89cb4f1fbf"
 tool_flags = {
     "CFLAGS": ["-D_GNU_SOURCE"],
     # guilty until proven innocent
@@ -87,14 +88,8 @@ hardening = ["!int", "!var-init"]
 # tests expect blender to be installed in /usr/bin
 options = ["!check", "linkundefver"]
 
-if self.profile().endian == "little":
-    makedepends += ["alembic-devel"]
-
-
-match self.profile().arch:
-    case "ppc64" | "ppc":
-        # vsx assumptions in altivec code
-        tool_flags = {"CXXFLAGS": ["-DEIGEN_DONT_VECTORIZE"]}
+if self.profile().endian == "big":
+    broken = "https://projects.blender.org/blender/blender/pulls/140138"
 
 if self.profile().arch in ["aarch64", "armv7", "x86_64"]:
     makedepends += ["openimagedenoise-devel"]

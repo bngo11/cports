@@ -1,5 +1,5 @@
 pkgname = "qt6-qtnetworkauth"
-pkgver = "6.10.0"
+pkgver = "6.10.2"
 pkgrel = 0
 build_style = "cmake"
 make_check_args = ["-E", "module_includes"]
@@ -15,7 +15,7 @@ license = (
 )
 url = "https://www.qt.io"
 source = f"https://download.qt.io/official_releases/qt/{pkgver[:-2]}/{pkgver}/submodules/qtnetworkauth-everywhere-src-{pkgver}.tar.xz"
-sha256 = "0460855d71e22d1f08045c9577c3ab09790b78f9de263405c2b9b00f6c33b3c8"
+sha256 = "4f29fd9e4b505f5714fc42296b04c701f66ced185c49de4d520cb8de4b1981b3"
 # cross: TODO
 options = ["!cross"]
 

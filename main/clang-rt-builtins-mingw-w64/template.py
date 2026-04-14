@@ -1,5 +1,5 @@
 pkgname = "clang-rt-builtins-mingw-w64"
-pkgver = "21.1.4"
+pkgver = "22.1.3"
 pkgrel = 0
 build_style = "cmake"
 configure_args = [
@@ -28,7 +28,6 @@ configure_args = [
 cmake_dir = "compiler-rt"
 hostmakedepends = [
     "base-cross",
-    "clang-tools-extra",
     "cmake",
     "llvm-devel",
     "ninja",
@@ -39,7 +38,7 @@ pkgdesc = "Clang runtime builtins for Windows development"
 license = "Apache-2.0 WITH LLVM-exception AND NCSA"
 url = "https://llvm.org"
 source = f"https://github.com/llvm/llvm-project/releases/download/llvmorg-{pkgver}/llvm-project-{pkgver}.src.tar.xz"
-sha256 = "a01ad7e5167780c945871d75c0413081d12067607a6de5cf71dc3e8d1a82112c"
+sha256 = "2488c33a959eafba1c44f253e5bbe7ac958eb53fa626298a3a5f4b87373767cd"
 hardening = ["!scp"]
 # crosstoolchain
 options = ["!check", "empty"]

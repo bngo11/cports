@@ -1,8 +1,9 @@
 pkgname = "git"
-pkgver = "2.51.2"
-pkgrel = 0
+pkgver = "2.52.0"
+pkgrel = 1
 hostmakedepends = [
-    "asciidoc",
+    "asciidoctor",
+    "docbook-xsl",
     "gettext",
     "perl",
     "pkgconf",
@@ -27,7 +28,7 @@ pkgdesc = "Fast, distributed version control system"
 license = "GPL-2.0-only"
 url = "https://git-scm.com"
 source = f"https://www.kernel.org/pub/software/scm/git/git-{pkgver}.tar.xz"
-sha256 = "233d7143a2d58e60755eee9b76f559ec73ea2b3c297f5b503162ace95966b4e3"
+sha256 = "3cd8fee86f69a949cb610fee8cd9264e6873d07fa58411f6060b3d62729ed7c5"
 hardening = ["cfi", "vis"]
 
 
@@ -43,6 +44,7 @@ TAR = tar
 CFLAGS = {self.get_cflags(shell=True)}
 LDFLAGS = {self.get_ldflags(shell=True)}
 USE_LIBPCRE2 = Yes
+USE_ASCIIDOCTOR = Yes
 NO_INSTALL_HARDLINKS = Yes
 ICONV_OMITS_BOM = Yes
 NO_REGEX = Yes
@@ -61,7 +63,7 @@ def build(self):
     cmd = ["make", f"-j{self.make_jobs}"]
     self.do(*cmd)
     self.do(*cmd, "-C", "Documentation", "man")
-    self.do(*cmd, "-C", "contrib/contacts", "all", "git-contacts.1")
+    self.do(*cmd, "-C", "contrib/contacts", "all")
     self.do(*cmd, "-C", "contrib/diff-highlight", "all")
     self.do(*cmd, "-C", "contrib/subtree", "all", "man")
     self.do(*cmd, "-C", "contrib/credential/libsecret", "all")
@@ -82,7 +84,8 @@ def check(self):
 def install(self):
     ddir = f"DESTDIR={self.chroot_destdir}"
     self.do("make", "install", "install-doc", ddir)
-    self.do("make", "-C", "contrib/contacts", "install", "install-man", ddir)
+    # contacts still requires python asciidoc so skip man
+    self.do("make", "-C", "contrib/contacts", "install", ddir)
     self.do("make", "-C", "contrib/subtree", "install", "install-man", ddir)
     # no install target
     self.install_file(

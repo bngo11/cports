@@ -1,5 +1,5 @@
 pkgname = "kcontacts"
-pkgver = "6.23.0"
+pkgver = "6.29.0"
 pkgrel = 0
 build_style = "cmake"
 # germania/germany difference
@@ -17,9 +17,9 @@ makedepends = [
 checkdepends = ["xwayland-run"]
 pkgdesc = "KDE address book API"
 license = "LGPL-2.0-or-later"
-url = "https://api.kde.org/frameworks/kcontacts/html"
+url = "https://community.kde.org/Frameworks"
 source = f"$(KDE_SITE)/frameworks/{pkgver[: pkgver.rfind('.')]}/kcontacts-{pkgver}.tar.xz"
-sha256 = "9cb66ef33d13fc1ddc8509be48ab569ddcb24945492285cb6749ef8f56c83ce9"
+sha256 = "08f8bfe83c5d4516b5c76877ac51aba8e7001242cd56d1e2a987bc8410af53fd"
 hardening = ["vis"]
 
 

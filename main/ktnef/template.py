@@ -1,5 +1,5 @@
 pkgname = "ktnef"
-pkgver = "25.12.2"
+pkgver = "26.08.0"
 pkgrel = 0
 build_style = "cmake"
 hostmakedepends = [
@@ -18,9 +18,9 @@ makedepends = [
 ]
 pkgdesc = "KDE library for TNEF data"
 license = "LGPL-2.0-or-later"
-url = "https://api.kde.org/kdepim/ktnef/html"
+url = "https://community.kde.org/KDE_PIM"
 source = f"$(KDE_SITE)/release-service/{pkgver}/src/ktnef-{pkgver}.tar.xz"
-sha256 = "a6e6ecf31a0ca924e3041a4091d144b215fe27f31f8af57acbaafac78314e13b"
+sha256 = "b7f6be661f45695596f88e964b05ef4db5d8f878df1a9c852fb8dd65ecb4e25e"
 
 
 @subpackage("ktnef-devel")

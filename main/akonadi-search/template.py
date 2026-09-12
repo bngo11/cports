@@ -1,5 +1,5 @@
 pkgname = "akonadi-search"
-pkgver = "25.12.2"
+pkgver = "26.08.0"
 pkgrel = 0
 build_style = "cmake"
 # sqlite: fails instantly (?)
@@ -36,11 +36,11 @@ makedepends = [
 checkdepends = ["xwayland-run"]
 pkgdesc = "KDE Akonadi search libraries"
 license = "LGPL-2.1-only AND (GPL-2.0-only OR GPL-3.0-only)"
-url = "https://api.kde.org/kdepim/akonadi-search/html"
+url = "https://community.kde.org/KDE_PIM"
 source = (
     f"$(KDE_SITE)/release-service/{pkgver}/src/akonadi-search-{pkgver}.tar.xz"
 )
-sha256 = "8328094f725ed4603e2309bf381d1a407baa38032e157f2e7421f3c53e2e21ce"
+sha256 = "22cad63d16449f2496374edf866a38bd62187006d0835e3cd1df0e6333e4d61a"
 
 
 def prepare(self):
@@ -59,12 +59,6 @@ def prepare(self):
     )
 
     cargo.Cargo(self, wrksrc="agent/rs/htmlparser").vendor()
-
-
-def post_patch(self):
-    from cbuild.util import cargo
-
-    cargo.clear_vendor_checksums(self, "libc", "agent/rs/htmlparser/vendor")
 
 
 def init_build(self):

@@ -1,5 +1,5 @@
 pkgname = "krunner"
-pkgver = "6.23.0"
+pkgver = "6.29.0"
 pkgrel = 0
 build_style = "cmake"
 # FIXME: similar tests broken on alpine, everything can work in the right env
@@ -24,9 +24,9 @@ makedepends = [
 checkdepends = ["dbus"]
 pkgdesc = "KDE Framework for providing different actions given a string query"
 license = "LGPL-2.1-only AND LGPL-2.1-or-later"
-url = "https://api.kde.org/frameworks/krunner/html"
+url = "https://community.kde.org/Frameworks"
 source = f"$(KDE_SITE)/frameworks/{pkgver[: pkgver.rfind('.')]}/krunner-{pkgver}.tar.xz"
-sha256 = "a02db30ef8c987bae67f4528efc8917473e0b5216b91541a2b74186a8fe6744f"
+sha256 = "163129f8d3e768cd531d21277c7a643600634eb01a5ea275a9170cdef51ac125"
 hardening = ["vis"]
 
 

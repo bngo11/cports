@@ -1,24 +1,19 @@
 pkgname = "minijinja-cli"
-pkgver = "2.17.1"
+pkgver = "2.24.0"
 pkgrel = 0
 build_style = "cargo"
 make_build_args = ["--bin", "minijinja-cli"]
 make_build_env = {
     "ASSET_OUT_DIR": "assets",
 }
+make_check_args = ["--package", "minijinja-cli"]
 hostmakedepends = ["cargo-auditable", "pkgconf"]
 makedepends = ["rust-std", "zstd-devel"]
 pkgdesc = "Jinja implementation"
 license = "Apache-2.0"
 url = "https://github.com/mitsuhiko/minijinja"
 source = f"{url}/archive/refs/tags/{pkgver}.tar.gz"
-sha256 = "917d7cc981ed1615d735570ef813c70825567b78ed7345925b56dc7f12fd218e"
-# check may be disabled
-options = []
-
-if self.profile().arch == "riscv64":
-    # lots of undefined pyo3 references when linking
-    options += ["!check"]
+sha256 = "18450631ca5feeb01c69c0dce4fd5917330310801866fa74717068f08e18fe3f"
 
 
 def install(self):

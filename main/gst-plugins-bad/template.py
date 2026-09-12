@@ -1,6 +1,6 @@
 pkgname = "gst-plugins-bad"
-pkgver = "1.26.6"
-pkgrel = 0
+pkgver = "1.28.5"
+pkgrel = 1
 build_style = "meson"
 configure_args = [
     "--auto-features=enabled",
@@ -31,6 +31,7 @@ configure_args = [
     "-Dlcevcdecoder=disabled",
     "-Dlcevcencoder=disabled",
     "-Dmediafoundation=disabled",
+    "-Dmpeghdec=disabled",
     "-Dmsdk=disabled",
     "-Dmusepack=disabled",
     "-Dneon=disabled",
@@ -48,7 +49,9 @@ configure_args = [
     "-Dsvthevcenc=disabled",
     "-Dsvtjpegxs=disabled",
     "-Dteletext=disabled",
+    "-Dtflite=disabled",
     "-Dtinyalsa=disabled",
+    "-Dvmaf=disabled",
     "-Dvoaacenc=disabled",
     "-Dvoamrwbenc=disabled",
     "-Dqt6d3d11=disabled",
@@ -58,6 +61,7 @@ configure_args = [
     "-Dwinks=disabled",
     "-Dwinscreencap=disabled",
     "-Dwpe=disabled",
+    "-Dwpe2=disabled",
     "-Dmagicleap=disabled",
     "-Davtp=disabled",
     "-Dcuda-nvmm=disabled",
@@ -73,6 +77,7 @@ configure_args = [
     "-Dzbar=disabled",  # maybe?
     "-Dzxing=disabled",  # maybe?
     "-Dflite=disabled",  # not packaged, fails with make 4.4
+    "-Disac=disabled",  # requires webrtc-audio-processing-1
 ]
 hostmakedepends = [
     "gettext",
@@ -148,7 +153,7 @@ pkgdesc = "GStreamer bad plugins"
 license = "LGPL-2.1-or-later"
 url = "https://gstreamer.freedesktop.org"
 source = f"{url}/src/gst-plugins-bad/gst-plugins-bad-{pkgver}.tar.xz"
-sha256 = "b3bf4b1ad3017eac1fcf1209eae8a61208f8ef43b9b1ef99b9366acf14d74a79"
+sha256 = "d8af55faef2958c1a8663751475ee46f5164877cf4d8c5913ea906ef180aeb71"
 # FIXME int
 hardening = ["!int"]
 # TODO: a few fails, debug later

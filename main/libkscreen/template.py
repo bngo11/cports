@@ -1,9 +1,7 @@
 pkgname = "libkscreen"
-pkgver = "6.6.1"
-pkgrel = 0
+pkgver = "6.7.4"
+pkgrel = 1
 build_style = "cmake"
-# XXX drop libexec
-configure_args = ["-DCMAKE_INSTALL_LIBEXECDIR=/usr/lib"]
 # testbackendloader testEnv(xrandr 1.1) 'preferred.fileName().startsWith(backend)' returned FALSE, flaky tests when parallel
 # testqscreenbackend & testinprocess broken (even on upstream CI) since v6.5.0 / e394a4c ("Drop QScreen backend")
 make_check_args = ["-E", "test(backendloader|qscreenbackend|inprocess)", "-j1"]
@@ -24,7 +22,7 @@ license = (
 )
 url = "https://invent.kde.org/plasma/libkscreen"
 source = f"$(KDE_SITE)/plasma/{pkgver}/libkscreen-{pkgver}.tar.xz"
-sha256 = "308ce7ecdad876079ff678417de29b8c4e2e83e1e404e44442141d63fe5e9dc5"
+sha256 = "f40bfbd83147a7c7ff387ffe5053cc2ea000bdb21555a0b3d06da3c59d7b4977"
 # traps on some setups?
 # https://github.com/chimera-linux/cports/issues/4960
 hardening = ["!int"]

@@ -22,8 +22,7 @@ def _make_crossfile(pkg, build_dir):
             pkg.error(f"unknown meson architecture: {pkg.profile().arch}")
 
     with open(cfpath, "w") as outf:
-        outf.write(
-            f"""
+        outf.write(f"""
 [binaries]
 c = '{pkg.get_tool("CC")}'
 cpp = '{pkg.get_tool("CXX")}'
@@ -52,8 +51,7 @@ system = 'linux'
 cpu_family = '{meson_cpu}'
 cpu = '{pkg.profile().arch}'
 endian = '{pkg.profile().endian}'
-"""
-        )
+""")
 
     return cfpath
 
@@ -85,7 +83,7 @@ def configure(pkg, build_dir, meson_dir=None, extra_args=[], env={}):
         "setup",
         "--prefix=/usr",
         "--libdir=/usr/lib",
-        "--libexecdir=/usr/libexec",
+        "--libexecdir=/usr/lib",
         "--bindir=/usr/bin",
         "--sbindir=/usr/bin",
         "--includedir=/usr/include",

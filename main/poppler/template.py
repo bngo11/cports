@@ -1,6 +1,6 @@
 pkgname = "poppler"
-pkgver = "26.02.0"
-_test_commit = "9d5011815a14c157ba25bb160187842fb81579a5"
+pkgver = "26.08.0"
+_test_commit = "48b6219b84fc0a708040cb279d51095cc4e1c603"
 pkgrel = 0
 build_style = "cmake"
 configure_args = [
@@ -26,7 +26,7 @@ makedepends = [
     "cairo-devel",
     "curl-devel",
     "glib-devel",
-    "gpgme-devel",
+    "gpgmepp-devel",
     "lcms2-devel",
     "libjpeg-turbo-devel",
     "libpng-devel",
@@ -44,8 +44,8 @@ source = [
 ]
 source_paths = [".", "testdata"]
 sha256 = [
-    "dded8621f7b2f695c91063aab1558691c8418374cd583501e89ed39487e7ab77",
-    "c4cbdbf44f1d5c1ccbd7de611e979d97b703851970819cbb021f97218a445ed2",
+    "dc906e68cea698109706ac6aa3d2c9d4512fcfcac42d90b8afcda486d1b9abd0",
+    "233bbb47eb6972ace21e149a03e7ab7a6b19634365809891d094a91bbd25ac2c",
 ]
 # check_qt6_goostring crashes
 hardening = ["!int"]

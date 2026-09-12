@@ -3,7 +3,6 @@ pkgver = "6.0.2"
 pkgrel = 0
 build_style = "gnu_configure"
 configure_args = [
-    "--libexecdir=/usr/lib",
     "--with-ipsecdir=/usr/lib/strongswan",
     "--with-capabilities=libcap",
     "--with-user=_strongswan",
@@ -82,10 +81,11 @@ license = "GPL-2.0-or-later"
 url = "https://www.strongswan.org"
 source = f"https://download.strongswan.org/strongswan-{pkgver}.tar.bz2"
 sha256 = "b8bfc897b84001fd810a281918d6c9ce37503cae0f41b39c43d4aba0201277cf"
+options = ["etcfiles"]
 
 
 def post_install(self):
     self.install_license("LICENSE")
-    self.install_service("^/strongswan")
-    self.install_sysusers("^/sysusers.conf")
-    self.install_tmpfiles("^/tmpfiles.conf")
+    self.install_service(self.files_path / "strongswan")
+    self.install_sysusers(self.files_path / "sysusers.conf")
+    self.install_tmpfiles(self.files_path / "tmpfiles.conf")

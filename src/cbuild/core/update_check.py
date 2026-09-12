@@ -13,7 +13,7 @@ import gzip
 import io
 import re
 
-from cbuild.apk import cli as apkcli
+from cbuild.apk import util as autil
 
 
 # implements version sorting as in gnu sort(1) version sort
@@ -91,6 +91,7 @@ class UpdateCheck:
         self.group = None
         self.vdprefix = None
         self.vdsuffix = None
+        self.agent_name = "cbuild-update-check"
         self.ignore = []
 
     def _fetch(self, u):
@@ -101,7 +102,7 @@ class UpdateCheck:
             u,
             None,
             {
-                "User-Agent": "cbuild-update-check/4.20.69",
+                "User-Agent": f"{self.agent_name}/4.20.69",
                 "Accept-Encoding": "gzip",
             },
         )
@@ -289,20 +290,22 @@ class UpdateCheck:
                     pname = pname.removeprefix("perl-")
             elif "github.com" in url:
                 pn = "/".join(url.split("/")[3:5])
-                url = f"https://github.com/{pn}/tags.atom"
+                url = (
+                    f"https://github.com/{pn}/info/refs?service=git-upload-pack"
+                )
                 rx = rf"""
-                    /releases/tag/
+                    refs/tags/
                     (v?|V?|{re.escape(pname)}-)?
-                    ([\d.]+)(?=") # match
+                    ([\d.]+)(?=\n) # match
                 """
                 rxg = 1
             elif "//gitlab." in url or "salsa.debian.org" in url:
                 pn = "/".join(url.split("/")[0:5])
-                url = f"{pn}/-/tags?format=atom"
+                url = f"{pn}/info/refs?service=git-upload-pack"
                 rx = rf"""
-                    {re.escape(pn)}/-/tags/
+                    refs/tags/
                     (v?|V?|{re.escape(pname)}-)?
-                    ([\d.]+)(?=\") # match
+                    ([\d.]+)(?=\n) # match
                 """
                 rxg = 1
             elif "bitbucket.org" in url:
@@ -311,7 +314,7 @@ class UpdateCheck:
                 rx = rf"""
                     refs/tags/
                     (v?|V?|{re.escape(pname)}-)?
-                    ([\d.]+)(?!^) # match
+                    ([\d.]+)(?=\n) # match
                 """
                 rxg = 1
             elif "ftp.gnome.org" in url or "download.gnome.org" in url:
@@ -323,11 +326,11 @@ class UpdateCheck:
                 url = f"https://download.gnome.org/sources/{pname}/cache.json"
             elif "archive.xfce.org" in url:
                 pn = "/".join(url.split("/")[4:6])
-                url = f"https://gitlab.xfce.org/{pn}/-/tags?format=atom"
+                url = f"https://gitlab.xfce.org/{pn}/info/refs?service=git-upload-pack"
                 rx = rf"""
-                    {re.escape(pn)}/-/tags/
-                    ({re.escape(pname)}-)?v? # lol
-                    ([\d.]+)(?=\") # match
+                    refs/tags/
+                    (v?|V?|{re.escape(pname)}-)?
+                    ([\d.]+)(?=\n) # match
                 """
                 rxg = 1
             elif "kernel.org/pub/linux/kernel/" in url:
@@ -357,7 +360,7 @@ class UpdateCheck:
                 rx = rf"""
                     refs/tags/
                     (v?|V?|{re.escape(pname)}-)?
-                    ([\d.]+)(?!^) # match
+                    ([\d.]+)(?=\n) # match
                 """
                 rxg = 1
             elif "pkgs.fedoraproject.org" in url:
@@ -475,6 +478,9 @@ def update_check(pkg, verbose=False, error=False):
         if hasattr(modh, "vdsuffix"):
             uc.vdsuffix = modh.vdsuffix
 
+        if hasattr(modh, "agent_name"):
+            uc.agent_name = modh.agent_name
+
     if uc.ignore is True or pkg.build_style == "meta":
         return checkvers
 
@@ -543,7 +549,7 @@ def update_check(pkg, verbose=False, error=False):
         if ignored:
             continue
 
-        ret = apkcli.compare_version(
+        ret = autil.version_compare(
             uc.pkgver.replace("-", "."), v.replace("-", "."), False
         )
         if ret == -1:

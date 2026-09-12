@@ -1,9 +1,7 @@
 pkgname = "purpose"
-pkgver = "6.23.0"
+pkgver = "6.29.0"
 pkgrel = 0
 build_style = "cmake"
-# XXX drop libexec
-configure_args = ["-DCMAKE_INSTALL_LIBEXECDIR=/usr/lib"]
 # menutest: ??
 # alternativesmodeltest: tries to reach remote url
 make_check_args = ["-E", "(menutest|alternativesmodeltest)"]
@@ -23,6 +21,7 @@ makedepends = [
     "ki18n-devel",
     "kio-devel",
     "kirigami-devel",
+    "kitemmodels-devel",
     "knotifications-devel",
     "kservice-devel",
     "prison-devel",
@@ -33,9 +32,9 @@ depends = ["accounts-qml-module"]
 checkdepends = ["xwayland-run", *depends]
 pkgdesc = "KDE purpose-specific integrations"
 license = "LGPL-2.1-only"
-url = "https://api.kde.org/frameworks/purpose/html/index.html"
+url = "https://community.kde.org/Frameworks/index.html"
 source = f"$(KDE_SITE)/frameworks/{pkgver[: pkgver.rfind('.')]}/purpose-{pkgver}.tar.xz"
-sha256 = "d1554574d6dd394794daf00069bdd3f83d7e303a02d2c46a1973081c5de29d5d"
+sha256 = "743445e6a1b3aee156aec6e84ac8d36161124784f9e5730b69b868fdd6fb79c2"
 hardening = ["vis"]
 
 

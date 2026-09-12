@@ -1,5 +1,5 @@
 pkgname = "gotosocial"
-pkgver = "0.21.2"
+pkgver = "0.22.1"
 pkgrel = 1
 build_style = "go"
 prepare_after_patch = True
@@ -15,7 +15,7 @@ pkgdesc = "ActivityPub server"
 license = "AGPL-3.0-or-later"
 url = "https://gotosocial.org"
 source = f"https://codeberg.org/superseriousbusiness/gotosocial/archive/v{pkgver}.tar.gz"
-sha256 = "a4fc7f0bcf7cb78c4ea814121967abf2a6b39d809e34e2fc7f95182f8654f25f"
+sha256 = "710644e037e381d394a60c9c3fad48c57e81889b2f54fd1d101f2a4066805179"
 # flaky
 options = ["!check"]
 

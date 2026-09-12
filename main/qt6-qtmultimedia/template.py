@@ -1,5 +1,5 @@
 pkgname = "qt6-qtmultimedia"
-pkgver = "6.10.2"
+pkgver = "6.11.2"
 pkgrel = 0
 build_style = "cmake"
 # these install /usr/lib/qt6/plugins/multimedia/libmockmultimediaplugin.a which
@@ -11,8 +11,7 @@ make_check_args = [
     "(tst_qscreencapturebackend"  # blacklisted on upstream CI, https://bugreports.qt.io/browse/QTBUG-111190
     "|tst_qwindowcapturebackend)",  # cannot find any windows, "hangs" for 9 mins
 ]
-# tst_q{mediaplayerbackend,videoframecolormanagement} only work under xvfb
-make_check_wrapper = ["xvfb-run"]
+make_check_wrapper = ["wlheadless-run", "--"]
 hostmakedepends = [
     "cmake",
     "ninja",
@@ -31,7 +30,7 @@ makedepends = [
 ]
 checkdepends = [
     "gst-plugins-good",
-    "xserver-xorg-xvfb",
+    "xwayland-run",
 ]
 depends = [
     # dlopen
@@ -45,7 +44,7 @@ license = (
 )
 url = "https://www.qt.io"
 source = f"https://download.qt.io/official_releases/qt/{pkgver[:-2]}/{pkgver}/submodules/qtmultimedia-everywhere-src-{pkgver}.tar.xz"
-sha256 = "93f7ef0106fbd731165a2723f3e436c911fc5e6880f5bc987b55516c20833e2b"
+sha256 = "967b5e02ec6b793cdb360622cd6e703132836af983208d678dae4b50f109cd9f"
 # FIXME: int breaks at least tst_qaudiodecoderbackend
 hardening = ["!int"]
 # TODO
@@ -68,7 +67,7 @@ def init_check(self):
 
 def post_install(self):
     # disabled above, so no uninstall
-    self.rm(">usr/tests", recursive=True, force=True)
+    self.rm(self.destdir / "usr/tests", recursive=True, force=True)
 
 
 @subpackage("qt6-qtmultimedia-devel")

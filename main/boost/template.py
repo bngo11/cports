@@ -1,6 +1,6 @@
 pkgname = "boost"
-pkgver = "1.90.0"
-pkgrel = 0
+pkgver = "1.91.0"
+pkgrel = 3
 hostmakedepends = ["pkgconf", "python"]
 makedepends = [
     "bzip2-devel",
@@ -16,7 +16,7 @@ pkgdesc = "Free peer-reviewed portable C++ source libraries"
 license = "BSL-1.0"
 url = "https://boost.org"
 source = f"https://archives.boost.io/release/{pkgver}/source/boost_{pkgver.replace('.', '_')}.tar.gz"
-sha256 = "5e93d582aff26868d581a52ae78c7d8edf3f3064742c6e77901a1f18a437eea9"
+sha256 = "5734305f40a76c30f951c9abd409a45a2a19fb546efe4162119250bbe4d3a463"
 options = ["empty"]
 
 # libs have semi-auto-generated subpkgs using this array
@@ -49,6 +49,7 @@ _libs = [
     "serialization",
     "stacktrace_addr2line",
     "stacktrace_basic",
+    "stacktrace_from_exception",
     "stacktrace_noop",
     "thread",
     "timer",
@@ -66,7 +67,6 @@ match self.profile().arch:
         _arch, _abi = "arm", "aapcs"
     case "x86_64":
         _arch, _abi = "x86", "sysv"
-        _libs.append("stacktrace_from_exception")
     case "loongarch64":
         _arch, _abi = "loongarch", "sysv"
     case "riscv64":
@@ -109,12 +109,10 @@ def build(self):
     )
 
     with open(self.cwd / "user-config.jam", "w") as cf:
-        cf.write(
-            f"""
+        cf.write(f"""
 using clang : : {self.get_tool("CXX")} : <cxxflags>"{self.get_cxxflags(shell=True)}" <linkflags>"{self.get_ldflags(shell=True)}" <warnings-as-errors>"off" ;
 using python : {self.python_version} : /usr/bin/python3 : {self.profile().sysroot}/usr/include/python{self.python_version} : {self.profile().sysroot}/usr/lib/python{self.python_version} ;
-"""
-        )
+""")
 
     _call_b2(self)
 
@@ -160,12 +158,10 @@ def install(self):
     self.install_dir("etc")
 
     with open(self.destdir / "etc/site-config.jam", "w") as sc:
-        sc.write(
-            """# System-wide configuration file for Boost.Build.
+        sc.write("""# System-wide configuration file for Boost.Build.
 
 using clang ;
-"""
-        )
+""")
 
     self.install_license("LICENSE_1_0.txt")
 
@@ -175,6 +171,7 @@ def _(self):
     self.subdesc = "Boost.Build framework"
     self.depends = [self.parent]
     self.provides = [self.with_pkgver(f"boost{pkgver[:-2]}-build")]
+    self.options = ["etcfiles"]
 
     return ["usr/bin/b2", "etc/site-config.jam", "usr/share/b2"]
 
@@ -184,7 +181,7 @@ def _(self):
     self.depends = [self.parent, *makedepends]
     self.provides = [self.with_pkgver(f"boost{pkgver[:-2]}-devel")]
 
-    return self.default_devel(extra=["usr/share/boost_predef"])
+    return self.default_devel()
 
 
 def _gen_libp(libname):

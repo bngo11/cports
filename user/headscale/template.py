@@ -1,18 +1,20 @@
 pkgname = "headscale"
-pkgver = "0.27.1"
+pkgver = "0.29.3"
 pkgrel = 1
 build_style = "go"
+prepare_after_patch = True
 make_build_args = [
     f"-ldflags=-X github.com/juanfont/headscale/cmd/headscale/cli.Version=v{pkgver}",
     "./cmd/headscale",
 ]
+make_check_args = ["-short", "./..."]
 hostmakedepends = ["go"]
 makedepends = ["dinit-chimera"]
 pkgdesc = "Open source implementation of the tailscale control server"
 license = "BSD-3-Clause"
 url = "https://github.com/juanfont/headscale"
 source = f"{url}/archive/refs/tags/v{pkgver}.tar.gz"
-sha256 = "a2ba09811919e4b285d17e4cdaf7ed5aeb9a8567eda11119557436d59711632e"
+sha256 = "9c2b6020b51a1d53641fe8e282fd849b4d00eca8945fef93d63454655a90ba0d"
 # generates completions with host binary
 options = ["!cross"]
 

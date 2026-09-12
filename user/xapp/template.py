@@ -1,10 +1,8 @@
 pkgname = "xapp"
 pkgver = "3.0.1"
-pkgrel = 0
+pkgrel = 1
 build_style = "meson"
-# XXX: drop libexec
 configure_args = [
-    "--libexecdir=/usr/lib",
     "-Ddocs=true",
     "-Ddebian_derivative=true",
 ]
@@ -32,7 +30,7 @@ url = "https://projects.linuxmint.com/xapps"
 source = f"https://github.com/linuxmint/xapp/archive/refs/tags/{pkgver}.tar.gz"
 sha256 = "0bd907bb7def8a891386fc711b16057670c2a0212e50f7db2b9445550d282f1f"
 # No tests
-options = ["!check", "!cross"]
+options = ["etcfiles", "!check", "!cross"]
 
 
 def post_install(self):

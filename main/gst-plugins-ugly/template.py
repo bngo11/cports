@@ -1,5 +1,5 @@
 pkgname = "gst-plugins-ugly"
-pkgver = "1.26.6"
+pkgver = "1.28.5"
 pkgrel = 0
 build_style = "meson"
 configure_args = [
@@ -32,4 +32,4 @@ pkgdesc = "GStreamer ugly plugins"
 license = "LGPL-2.1-or-later"
 url = "https://gstreamer.freedesktop.org"
 source = f"{url}/src/gst-plugins-ugly/gst-plugins-ugly-{pkgver}.tar.xz"
-sha256 = "95032eee4580bb9826c008cbce5a2c3a78b980abb270c96a19b645f77255c491"
+sha256 = "0ef4cf9c3c9a5e776a6ca8d190a31863391b681980252143b822b29aa831e120"

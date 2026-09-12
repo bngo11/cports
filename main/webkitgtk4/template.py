@@ -1,12 +1,11 @@
 # mirrors the gtk3 webkitgtk template
 pkgname = "webkitgtk4"
-pkgver = "2.52.0"
+pkgver = "2.52.6"
 pkgrel = 0
 build_style = "cmake"
 configure_args = [
     "-DPORT=GTK",
     "-DCMAKE_SKIP_RPATH=ON",
-    "-DCMAKE_INSTALL_LIBEXECDIR=/usr/lib",  # XXX drop libexec
     f"-DCMAKE_LINKER={self.profile().triplet}-clang",
     # -DUSE_*
     "-DUSE_GTK4=ON",
@@ -101,7 +100,7 @@ pkgdesc = "GTK4 port of the WebKit browser engine"
 license = "LGPL-2.1-or-later AND BSD-2-Clause"
 url = "https://webkitgtk.org"
 source = f"{url}/releases/webkitgtk-{pkgver}.tar.xz"
-sha256 = "b31c55f18194ac83ba08c9b93bbeffef57a7ecff7f41c874d17a9e7853dca19f"
+sha256 = "179a2ea3f8f6edd4be7f31fdc55afc57bd0729f1fba648c61d4181539ac116fc"
 debug_level = 1  # otherwise LTO link runs out of memory + fat debuginfo
 tool_flags = {
     "CFLAGS": ["-DNDEBUG"],

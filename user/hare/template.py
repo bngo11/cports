@@ -1,5 +1,5 @@
 pkgname = "hare"
-pkgver = "0.25.2"
+pkgver = "0.26.0.1"
 pkgrel = 0
 archs = ["aarch64", "riscv64", "x86_64"]
 build_style = "makefile"
@@ -9,7 +9,7 @@ make_build_args = [
     f"{self.profile().arch.upper()}_CC=cc",
     f"{self.profile().arch.upper()}_LD=ld",
     f"VERSION={pkgver}-chimera",
-    "LIBEXECDIR=/usr/lib",  # XXX libexecdir
+    "LIBEXECDIR=/usr/lib",
 ]
 make_install_args = [*make_build_args]
 hostmakedepends = [
@@ -24,7 +24,7 @@ pkgdesc = "Hare programming language"
 license = "MPL-2.0 AND GPL-3.0-only"
 url = "https://harelang.org"
 source = f"https://git.sr.ht/~sircmpwn/hare/archive/{pkgver}.tar.gz"
-sha256 = "d0baf74f4e20a3a875ddd8e2b299032ada4e5de17d8413053cad0f709446348e"
+sha256 = "f76704920a2f457be4d2d6290dc10dcfb7319c1d1990f2305491644383466905"
 tools = {"AS": f"{self.profile().triplet}-as"}
 
 match self.profile().arch:

@@ -1,5 +1,5 @@
 pkgname = "nss"
-pkgver = "3.121"
+pkgver = "3.127"
 pkgrel = 0
 build_style = "makefile"
 make_build_target = "all"
@@ -16,7 +16,7 @@ pkgdesc = "Mozilla Network Security Services"
 license = "MPL-2.0"
 url = "https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS"
 source = f"$(MOZILLA_SITE)/security/nss/releases/NSS_{pkgver.replace('.', '_')}_RTM/src/nss-{pkgver}.tar.gz"
-sha256 = "cb3a8f8781bea78b7b8edd3afb7a2cb58e4881bb0160d189a39b98216ba7632e"
+sha256 = "5a899cad21ae2c9d3c5132de79726eda8df3b7fdf18eeb239fc544d43b87338b"
 tool_flags = {"CFLAGS": []}
 env = {
     "LIBRUNPATH": "",
@@ -31,7 +31,7 @@ env = {
 
 
 def post_patch(self):
-    self.cp("^/install.sh", self.cwd)
+    self.cp(self.files_path / "install.sh", self.cwd)
     (self.cwd / "install.sh").chmod(0o755)
 
 

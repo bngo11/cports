@@ -12,12 +12,12 @@ url = "https://mandoc.bsd.lv"
 source = f"{url}/snapshots/mandoc-{pkgver}.tar.gz"
 sha256 = "8bf0d570f01e70a6e124884088870cbed7537f36328d512909eb10cd53179d9c"
 hardening = ["vis", "cfi"]
+options = ["etcfiles"]
 
 
 def pre_configure(self):
     with open(self.cwd / "configure.local", "w") as cf:
-        cf.write(
-            f"""
+        cf.write(f"""
 PREFIX=/usr
 SBINDIR=/usr/bin
 MANDIR=/usr/share/man
@@ -28,8 +28,7 @@ CC="{self.get_tool("CC")}"
 HAVE_REWB_BSD=0
 UTF8_LOCALE=C.UTF-8
 BINM_PAGER=less
-"""
-        )
+""")
 
 
 def post_install(self):

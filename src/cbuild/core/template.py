@@ -111,15 +111,7 @@ def _pglob_path(oldp, patp):
 
 
 def _subst_path(pkg, pathn):
-    if isinstance(pathn, str):
-        if pathn.startswith(">/"):
-            return pkg.destdir / pathn.removeprefix(">/")
-        elif pathn.startswith("^/"):
-            return pkg.files_path / pathn.removeprefix("^/")
-        else:
-            return pathlib.Path(pathn)
-    else:
-        return pathlib.Path(pathn)
+    return pathlib.Path(pathn)
 
 
 class Package:
@@ -349,6 +341,7 @@ default_options = {
     "lintcomp": (True, False),
     "lintstatic": (True, False),
     "lintpixmaps": (True, False),
+    "etcfiles": (False, False),
     "distlicense": (True, False),
     "empty": (False, False),
     # actually true by default for -devel
@@ -380,6 +373,7 @@ default_options = {
     "ltostrip": (False, False),
     "linkparallel": (True, True),
     "linkundefver": (False, False),
+    "linkrelax": (True, False),
     "framepointer": (True, True),
     "fullrustflags": (False, True),
     "sanruntime": (False, True),
@@ -1391,7 +1385,7 @@ class Template(Package):
 
         verstr = f"{self.pkgver}-r{self.pkgrel}"
 
-        if not cli.check_version(verstr):
+        if not autil.version_validate(verstr):
             self.error("pkgver has an invalid format")
 
         iifstr = f"={verstr}"
@@ -1530,6 +1524,8 @@ class Template(Package):
             self.error("pkgdesc should start with an uppercase letter")
         if len(dstr) > 72:
             self.error("pkgdesc should be no longer than 72 characters")
+        if " written in " in dstr:
+            self.error("pkgdesc should not mention the choice of language")
         if re.search(r" \(.+\)$", self.pkgdesc):
             self.error(
                 "pkgdesc should not contain a (subdescription)",
@@ -1836,24 +1832,20 @@ class Template(Package):
     def is_built(self, quiet=False):
         archn = self.profile().arch
         with flock.lock(flock.apklock(archn)):
-            pinfo = cli.call(
-                "search",
-                ["--from", "none", "-e", self.pkgname],
+            pinfo = cli.query(
+                ["repositories", "version"],
+                ["--from=none", self.pkgname],
                 self.repository,
-                capture_output=True,
                 arch=archn,
                 allow_untrusted=True,
                 allow_network=False,
                 use_altrepo=False,
             )
-            if pinfo.returncode == 0 and len(pinfo.stdout.strip()) > 0:
-                foundp = pinfo.stdout.strip().decode()
-                if foundp == f"{self.pkgname}-{self.pkgver}-r{self.pkgrel}":
-                    if self.origin_pkg == self and not quiet:
-                        # TODO: print the repo somehow
-                        self.log(f"found ({pinfo.stdout.strip().decode()})")
-                    return True
-            return False
+            if not pinfo or pinfo[0]["version"] != self.full_pkgver:
+                return False
+            if self.origin_pkg == self and not quiet:
+                self.log(f"found ({pinfo[0]['repositories'][0]})")
+            return True
 
     def do(
         self,
@@ -1964,6 +1956,8 @@ class Template(Package):
         lld_args = compiler._get_lld_cpuargs(self.link_threads)
         if self.options["linkundefver"]:
             lld_args += ["--undefined-version"]
+        if not self.options["linkrelax"]:
+            lld_args += ["--no-relax"]
         if self.use_ltocache:
             lld_args += [
                 f"--thinlto-cache-policy=cache_size_bytes={self.use_ltocache}",
@@ -2192,12 +2186,12 @@ class Template(Package):
             raise errors.TracebackException(
                 f"install_file: path '{dest}' must not be absolute"
             )
-        for src in srcs:
+        for srcv in srcs:
             # copy
             if name:
                 dfn = self.destdir / dest / name
             else:
-                dfn = self.destdir / dest / src.name
+                dfn = self.destdir / dest / srcv.name
             if dfn.exists():
                 raise errors.TracebackException(
                     f"install_file: destination file '{dfn}' already exists"
@@ -2205,12 +2199,12 @@ class Template(Package):
             self.install_dir(dest)
             if template:
                 with open(dfn, "w") as outf:
-                    with (self.cwd / src).open() as inpf:
+                    with (self.cwd / srcv).open() as inpf:
                         for ln in inpf:
                             outf.write(_replace_fpat(ln, template, pattern))
             else:
                 shutil.copy2(
-                    self.cwd / src, dfn, follow_symlinks=follow_symlinks
+                    self.cwd / srcv, dfn, follow_symlinks=follow_symlinks
                 )
             if mode is not None and (follow_symlinks or not dfn.is_symlink()):
                 dfn.chmod(mode)

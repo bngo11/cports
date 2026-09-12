@@ -1,7 +1,9 @@
 pkgname = "plasma-nm"
-pkgver = "6.6.1"
+pkgver = "6.7.4"
 pkgrel = 0
 build_style = "cmake"
+make_check_args = ["-E", "(kcm_.*_smoketest|mobileproviderstest)"]
+make_check_env = {"QT_QPA_PLATFORM": "offscreen"}
 hostmakedepends = [
     "cmake",
     "extra-cmake-modules",
@@ -17,6 +19,7 @@ makedepends = [
     "kdbusaddons-devel",
     "ki18n-devel",
     "kio-devel",
+    "kirigami-addons-devel",
     "kirigami-devel",
     "knotifications-devel",
     "ksvg-devel",
@@ -28,6 +31,7 @@ makedepends = [
     "qca-devel",
     "qcoro-devel",
     "qt6-qtdeclarative-devel",
+    "qtkeychain-devel",
     # TODO: openconnect>=3.99 -> qt6-qtwebengine-devel
 ]
 depends = ["prison"]
@@ -35,5 +39,5 @@ pkgdesc = "KDE Plasma NetworkManager integration"
 license = "GPL-2.0-or-later AND LGPL-2.0-or-later"
 url = "https://invent.kde.org/plasma/plasma-nm"
 source = f"$(KDE_SITE)/plasma/{pkgver}/plasma-nm-{pkgver}.tar.xz"
-sha256 = "72291bd704da3c91ddeb58b434cb3130138ca1fb20eee4210e26318771e08457"
+sha256 = "c4d49e08072510ed1d2ea9e124dcf493a86458391c756d14aaac28c2c0a7e484"
 hardening = ["vis"]

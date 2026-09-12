@@ -1,5 +1,5 @@
 pkgname = "mimetreeparser"
-pkgver = "25.12.2"
+pkgver = "26.08.0"
 pkgrel = 0
 build_style = "cmake"
 make_check_args = ["-j1"]
@@ -12,11 +12,12 @@ hostmakedepends = [
     "pkgconf",
 ]
 makedepends = [
-    "gpgme-devel",
+    "gpgmepp-devel",
     "kcalendarcore-devel",
     "kcodecs-devel",
     "kcolorscheme-devel",
     "ki18n-devel",
+    "kio-devel",
     "kmbox-devel",
     "kmime-devel",
     "kwidgetsaddons-devel",
@@ -30,7 +31,7 @@ url = "https://invent.kde.org/pim/mimetreeparser"
 source = (
     f"$(KDE_SITE)/release-service/{pkgver}/src/mimetreeparser-{pkgver}.tar.xz"
 )
-sha256 = "bdd46f111fa707b2c2f2bd6621af436d0a29ebcc8b98ae5a4facb022161cd91e"
+sha256 = "3c3da58d03d789c1f67a83c2f618cfb0d2153a16c67f23a59409f24aadf55e1e"
 
 
 @subpackage("mimetreeparser-devel")

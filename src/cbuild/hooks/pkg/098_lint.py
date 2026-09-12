@@ -187,6 +187,7 @@ def invoke(pkg):
         "sbin",
         "lib32",
         "lib64",
+        "libexec",
         "local",
         "lib/installed-tests",
         "lib/locale",
@@ -208,6 +209,7 @@ def invoke(pkg):
         "share/mime/types",
         "share/mime/version",
         "tests",
+        "usr",
     ]:
         if (pkg.destdir / "usr" / d).exists():
             pkg.log_red(f"forbidden path '/usr/{d}'")
@@ -219,6 +221,12 @@ def invoke(pkg):
     ):
         pkg.log_red(
             "'/usr/share/pixmaps' exists, '/usr/share/icons' is preferred for application icons"
+        )
+        lintfail = True
+
+    if not pkg.options["etcfiles"] and (pkg.destdir / "etc").exists():
+        pkg.log_red(
+            "'/etc' exists, verify if this is necessary and then set the 'etcfiles' option"
         )
         lintfail = True
 

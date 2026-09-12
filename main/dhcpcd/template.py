@@ -1,12 +1,11 @@
 pkgname = "dhcpcd"
-pkgver = "10.2.4"
-pkgrel = 0
+pkgver = "10.3.2"
+pkgrel = 2
 build_style = "configure"
-# XXX drop libexec
 configure_args = [
-    "--libexecdir=/usr/lib",
     "--prefix=/usr",
     "--sbindir=/usr/bin",
+    "--libexecdir=/usr/lib",
     "--sysconfdir=/etc",
     "--rundir=/run/dhcpcd",
     "--dbdir=/var/lib/dhcpcd",
@@ -21,13 +20,14 @@ pkgdesc = "RFC2131 compliant DHCP client"
 license = "BSD-2-Clause"
 url = "https://roy.marples.name/projects/dhcpcd"
 source = f"https://github.com/NetworkConfiguration/dhcpcd/releases/download/v{pkgver}/dhcpcd-{pkgver}.tar.xz"
-sha256 = "6721e606609226dbf4d864a78802a9e96beec0ee034a1bd84138b3e037bba7d9"
+sha256 = "b6aa46932074906a9badef1bfe142b8aff9d041c2689e1ef8b74c12e9fd942bd"
 # FIXME vis for usr/lib/dhcpcd/dev/udev.so
 hardening = ["!vis", "!cfi"]
+options = ["etcfiles"]
 
 
 def post_install(self):
     self.install_license("LICENSE")
-    self.install_sysusers("^/sysusers.conf")
-    self.install_tmpfiles("^/tmpfiles.conf")
-    self.install_service("^/dhcpcd")
+    self.install_sysusers(self.files_path / "sysusers.conf")
+    self.install_tmpfiles(self.files_path / "tmpfiles.conf")
+    self.install_service(self.files_path / "dhcpcd")

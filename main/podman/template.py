@@ -1,6 +1,6 @@
 pkgname = "podman"
-pkgver = "5.5.2"
-pkgrel = 4
+pkgver = "6.1.0"
+pkgrel = 0
 build_style = "go"
 # for install.bin compat
 make_dir = "bin"
@@ -34,8 +34,8 @@ depends = [
     "conmon",
     "containers-common",
     "fuse-overlayfs",
-    "iptables",
     "netavark",
+    "nftables",
     "oci-runtime",
     "passt",
 ]
@@ -50,7 +50,7 @@ pkgdesc = "Container and image management tool"
 license = "Apache-2.0"
 url = "https://podman.io"
 source = f"https://github.com/containers/podman/archive/v{pkgver}.tar.gz"
-sha256 = "a2dbd8280cd92d4741f32f5a99d385d7fc6f0dd36bc9cc90a7273767e26d43d9"
+sha256 = "e086183db2f852476a7fa2580d0276cef32086b4cf17ae7020948f06eb613e0d"
 # nah
 options = ["!check"]
 
@@ -79,3 +79,6 @@ def install(self):
         name="podman-docker",
         mode=0o755,
     )
+
+    self.uninstall("usr/share/man/man?/podman-quadlet*", glob=True)
+    self.uninstall("usr/share/man/man?/quadlet.*", glob=True)

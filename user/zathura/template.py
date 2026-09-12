@@ -1,5 +1,5 @@
 pkgname = "zathura"
-pkgver = "2026.02.22"
+pkgver = "2026.07.18"
 pkgrel = 0
 build_style = "meson"
 hostmakedepends = [
@@ -11,22 +11,25 @@ hostmakedepends = [
     "python-sphinx",
 ]
 makedepends = [
-    "check-devel",
     "file-devel",
     "girara-devel",
     "glib-devel",
-    "gtk+3-devel",
+    "gtk4-devel",
     "json-glib-devel",
-    "libnotify-devel",
     "libseccomp-devel",
     "sqlite-devel",
+    "xxhash-devel",
 ]
-checkdepends = ["xserver-xorg-xvfb"]
+checkdepends = [
+    "check-devel",
+    "desktop-file-utils",
+    "xserver-xorg-xvfb",
+]
 pkgdesc = "Document viewer"
 license = "Zlib"
 url = "https://pwmt.org/projects/zathura"
 source = f"{url}/download/zathura-{pkgver}.tar.xz"
-sha256 = "cd162cac1d8f399a7b193db3c968513d6cb016631e892b5b1e7bdb0992151dc2"
+sha256 = "9efc4a92f8b2d03e5a1b80756d3ae4249d8d6efdb10e311795e8cdd8e35a9f87"
 
 
 def post_install(self):

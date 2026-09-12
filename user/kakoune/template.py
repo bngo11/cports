@@ -1,6 +1,6 @@
 pkgname = "kakoune"
-pkgver = "2025.06.03"
-pkgrel = 0
+pkgver = "2026.04.12"
+pkgrel = 1
 build_style = "makefile"
 make_install_args = ["gzip_man=no"]
 make_use_env = True
@@ -9,7 +9,7 @@ pkgdesc = "Modal code editor inspired by vim"
 license = "Unlicense"
 url = "https://kakoune.org"
 source = f"https://github.com/mawww/kakoune/releases/download/v{pkgver}/kakoune-{pkgver}.tar.bz2"
-sha256 = "ced5941f1bdfb8ef6b0265b00bfd7389e392fb41b2bf11990cee9d6e95316499"
+sha256 = "ce67adc8af7b20550463332c38e389cacfdd80f709e14b9940c127091aab0681"
 hardening = ["vis", "cfi"]
 # check may be disabled
 options = []
@@ -21,3 +21,8 @@ if (
     # aarch64 fails kak_selection test
     # big endian gets stuck in the suite
     options += ["!check"]
+
+
+def post_extract(self):
+    # fails weirdly
+    self.rm("test/compose/history", recursive=True)

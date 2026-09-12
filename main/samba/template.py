@@ -1,13 +1,12 @@
 # TODO: service files, cleanup
 pkgname = "samba"
 pkgver = "4.23.3"
-pkgrel = 1
+pkgrel = 3
 build_style = "waf"
 configure_script = "buildtools/bin/waf"
 configure_args = [
     "--enable-fhs",
     "--sbindir=/usr/bin",
-    "--libexecdir=/usr/lib",  # XXX drop libexec
     "--localstatedir=/var",
     "--sysconfdir=/etc",
     "--with-piddir=/run/samba",
@@ -100,7 +99,7 @@ sha256 = "06cdbb27a6956978b045455fe0696d998ffbac8d24ba24de87a4ef8200813320"
 tool_flags = {"CFLAGS": ["-D_BSD_SOURCE"]}
 env = {"PYTHONHASHSEED": "1"}
 # check needs --enable-selftest, which needs extra system dependencies
-options = ["!cross", "!check", "!installroot", "linkundefver"]
+options = ["etcfiles", "!cross", "!check", "!installroot", "linkundefver"]
 
 # idmap_ad should go here if active directory is enabled
 configure_args.append(
@@ -356,6 +355,7 @@ def _(self):
         "tdb-progs",
         "iproute2",
     ]
+    self.options = ["etcfiles"]
 
     return [
         "etc/ctdb",

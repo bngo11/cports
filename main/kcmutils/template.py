@@ -1,9 +1,7 @@
 pkgname = "kcmutils"
-pkgver = "6.23.0"
+pkgver = "6.29.0"
 pkgrel = 0
 build_style = "cmake"
-# XXX drop libexec
-configure_args = ["-DCMAKE_INSTALL_LIBEXECDIR=/usr/lib"]
 make_check_env = {"QT_QPA_PLATFORM": "offscreen"}
 hostmakedepends = ["cmake", "extra-cmake-modules", "gettext", "ninja"]
 makedepends = [
@@ -19,9 +17,9 @@ makedepends = [
 ]
 pkgdesc = "Utilities for KDE System Settings modules"
 license = "LGPL-2.1-only AND LGPL-2.1-or-later"
-url = "https://api.kde.org/frameworks/kcmutils/html"
+url = "https://community.kde.org/Frameworks"
 source = f"$(KDE_SITE)/frameworks/{pkgver[: pkgver.rfind('.')]}/kcmutils-{pkgver}.tar.xz"
-sha256 = "54ecfedc0bc91ce95fa98b8b53e41d2993557e99a19b953395c2a5e5dc4210f8"
+sha256 = "762943ea8eff8c27a5b89bc483aef0af5955b716270b0820e0addae2c38392a6"
 hardening = ["vis"]
 
 

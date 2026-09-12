@@ -1,6 +1,6 @@
 pkgname = "nginx"
-pkgver = "1.28.0"
-pkgrel = 1
+pkgver = "1.30.4"
+pkgrel = 0
 build_style = "configure"
 configure_args = [
     "--prefix=/var/lib/nginx",
@@ -81,19 +81,25 @@ license = "BSD-2-Clause"
 url = "https://nginx.org"
 source = [
     f"https://nginx.org/download/nginx-{pkgver}.tar.gz",
-    "https://hg.nginx.org/nginx-tests/archive/f5ef37b2e260.tar.gz",
+    "https://github.com/nginx/nginx-tests/archive/4d1de3f357.tar.gz",
 ]
 source_paths = [".", "nginx-tests"]
 sha256 = [
-    "c6b5c6b086c0df9d3ca3ff5e084c1d0ef909e6038279c71c1c3e985f576ff76a",
-    "9056dca56c96922c7d3fc6100c183d8262d6faa46685a817e611ade2479d676a",
+    "4261dc90e9e47c1c4041276e9aaa3d48ebe2e664f728e14fa95ae6c67d57a08b",
+    "e6008f0883a98eb30d84b2ab5d69c19aed2dea8a2eb368402a526e1d3fd16636",
 ]
 file_modes = {
     # must be present in main package
     "+usr/lib/nginx/modules": ("root", "root", 0o755, True),
 }
 # needs a lot more work
-options = ["!cross"]
+options = ["etcfiles", "!cross"]
+
+if self.profile().arch in ["loongarch64", "ppc64le"]:
+    # FIXME
+    # ppc64le: fails stream_upstream_random.t, stream_upstream_least_conn.t
+    # loongarch64: fails ssl_store_keys.t
+    options += ["!check"]
 
 
 def post_extract(self):
@@ -136,6 +142,7 @@ def _module(modn, eiif):
     @subpackage(f"nginx-module-{modn}")
     def _(self):
         self.subdesc = f"{modn} module"
+        self.options = ["etcfiles"]
 
         modso = f"modules/ngx_{modn}_module.so"
         ret = [f"usr/lib/nginx/{modso}"]

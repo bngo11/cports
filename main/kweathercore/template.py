@@ -1,5 +1,5 @@
 pkgname = "kweathercore"
-pkgver = "25.12.2"
+pkgver = "26.08.0"
 pkgrel = 0
 build_style = "cmake"
 # needs to get location
@@ -19,11 +19,11 @@ makedepends = [
 ]
 pkgdesc = "KDE Weather library"
 license = "LGPL-2.0-or-later"
-url = "https://api.kde.org/kweathercore/html"
+url = "https://invent.kde.org/libraries/kweathercore"
 source = (
     f"$(KDE_SITE)/release-service/{pkgver}/src/kweathercore-{pkgver}.tar.xz"
 )
-sha256 = "56ab998dbb041d071f8a9df4237cc7e5d1e6e57bc9a73441447b690f9efc9113"
+sha256 = "9a9624154978a473a3c9e763374a9c9500d79e21dd80125fc2342a000f0253cb"
 
 
 @subpackage("kweathercore-devel")

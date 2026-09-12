@@ -1,5 +1,5 @@
 pkgname = "newsraft"
-pkgver = "0.35"
+pkgver = "0.37"
 pkgrel = 0
 build_style = "makefile"
 hostmakedepends = ["pkgconf"]
@@ -13,7 +13,7 @@ pkgdesc = "Feed reader for terminal"
 license = "ISC"
 url = "https://codeberg.org/newsraft/newsraft"
 source = f"{url}/archive/newsraft-{pkgver}.tar.gz"
-sha256 = "6a87c8a9b8556650d18443baf827cf930aa4a5c5361a36397b95f275e28d540d"
+sha256 = "725fdbf4c14d87eb7e926aebd9b116f540dca812bea02e73078070156d986ad4"
 hardening = ["vis", "cfi"]
 
 

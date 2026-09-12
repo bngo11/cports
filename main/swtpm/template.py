@@ -3,7 +3,6 @@ pkgver = "0.10.1"
 pkgrel = 0
 build_style = "gnu_configure"
 configure_args = [
-    "--libexecdir=/usr/lib",  # XXX drop libexec
     "--with-gnutls",
     "--with-tss-user=tss",
     "--with-tss-group=tss",
@@ -35,11 +34,12 @@ license = "BSD-3-Clause"
 url = "https://github.com/stefanberger/swtpm"
 source = f"{url}/archive/refs/tags/v{pkgver}.tar.gz"
 sha256 = "f8da11cadfed27e26d26c5f58a7b8f2d14d684e691927348906b5891f525c684"
+options = ["etcfiles"]
 
 
 def post_install(self):
     self.install_license("LICENSE")
-    self.install_tmpfiles("^/tmpfiles.conf")
+    self.install_tmpfiles(self.files_path / "tmpfiles.conf")
     self.uninstall("usr/lib/installed-tests")
 
 

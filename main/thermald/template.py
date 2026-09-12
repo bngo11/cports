@@ -1,10 +1,9 @@
 pkgname = "thermald"
-pkgver = "2.5.9"
-pkgrel = 1
+pkgver = "2.5.12"
+pkgrel = 0
 archs = ["x86_64"]
 # don't use autogen.sh, it generates files that force reconf in build phase
 build_style = "gnu_configure"
-configure_args = ["--with-dbus-power-group=_thermald"]
 make_dir = "."
 hostmakedepends = [
     "autoconf-archive",
@@ -27,8 +26,9 @@ pkgdesc = "Thermal daemon for x86_64-based Intel CPUs"
 license = "GPL-2.0-or-later"
 url = "https://github.com/intel/thermal_daemon"
 source = f"{url}/archive/refs/tags/v{pkgver}.tar.gz"
-sha256 = "32fc75861e5e42b4b6ce0718af3e5b275f3febfccf6e7a3d3fbb5254791d7e74"
+sha256 = "f0698f8295b1c4f57673462e7c3a970d0fc328d56d80c0b9ab35644f5dbb72a9"
 hardening = ["vis", "!cfi"]
+options = ["etcfiles"]
 
 
 # autoreconf fails otherwise
@@ -45,4 +45,3 @@ def post_install(self):
     )
     self.install_license("COPYING")
     self.install_service(self.files_path / "thermald")
-    self.install_sysusers(self.files_path / "sysusers.conf")

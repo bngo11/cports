@@ -1,9 +1,7 @@
 pkgname = "ktexteditor"
-pkgver = "6.23.0"
+pkgver = "6.29.0"
 pkgrel = 0
 build_style = "cmake"
-# XXX drop libexec
-configure_args = ["-DCMAKE_INSTALL_LIBEXECDIR=/usr/lib"]
 make_check_args = [
     "-E",
     # FIXME: katedocument_test testAboutToSave() hangs for 5 minutes,
@@ -33,9 +31,9 @@ makedepends = [
 checkdepends = ["dbus"]
 pkgdesc = "KDE Full text editor component"
 license = "LGPL-2.0-or-later AND (LGPL-2.0-only OR LGPL-3.0-only)"
-url = "https://api.kde.org/frameworks/ktexteditor/html"
+url = "https://community.kde.org/Frameworks"
 source = f"$(KDE_SITE)/frameworks/{pkgver[: pkgver.rfind('.')]}/ktexteditor-{pkgver}.tar.xz"
-sha256 = "699905e5ca27a10e3ead4d1581ad3b362a727c3fab7155a2a6f8f4eea2d67a41"
+sha256 = "ab28187332c2e4af1706999bc1fb51256f32dc2ebd28bc21081062b8ff1e4ce7"
 hardening = ["vis"]
 
 

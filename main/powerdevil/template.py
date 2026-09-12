@@ -1,9 +1,7 @@
 pkgname = "powerdevil"
-pkgver = "6.6.1"
-pkgrel = 0
+pkgver = "6.7.4"
+pkgrel = 1
 build_style = "cmake"
-# XXX drop libexec
-configure_args = ["-DCMAKE_INSTALL_LIBEXECDIR=/usr/lib"]
 # FIXME: all tests broken like on alpine, migrateconfig_test*
 make_check_args = [
     "-E",
@@ -60,7 +58,7 @@ pkgdesc = "KDE Plasma shell power consumption settings manager"
 license = "GPL-2.0-or-later AND LGPL-2.0-or-later"
 url = "https://invent.kde.org/plasma/powerdevil"
 source = f"$(KDE_SITE)/plasma/{pkgver}/powerdevil-{pkgver}.tar.xz"
-sha256 = "18729609612956fb51f41c13ca8afd46fa1e46ade1184433d31e576866630403"
+sha256 = "cfd53172f168b5a80cba7ab85e7b929f6d7c7e0fa80ed0d48da140b5a7d698e3"
 file_modes = {
     "usr/lib/org_kde_powerdevil": ("root", "root", 0o755),
 }
@@ -70,6 +68,7 @@ file_xattrs = {
     },
 }
 hardening = ["vis"]
+options = ["etcfiles"]
 
 
 def post_install(self):

@@ -26,6 +26,7 @@ license = "GPL-2.0-or-later"
 url = "https://chrony-project.org"
 source = f"https://chrony-project.org/releases/chrony-{pkgver}.tar.gz"
 sha256 = "33ea8eb2a4daeaa506e8fcafd5d6d89027ed6f2f0609645c6f149b560d301706"
+options = ["etcfiles"]
 
 
 def post_install(self):
@@ -33,8 +34,8 @@ def post_install(self):
     self.install_file(
         "examples/chrony.conf.example1", "etc", name="chrony.conf"
     )
-    self.install_sysusers("^/sysusers.conf")
-    self.install_tmpfiles("^/tmpfiles.conf")
+    self.install_sysusers(self.files_path / "sysusers.conf")
+    self.install_tmpfiles(self.files_path / "tmpfiles.conf")
     # dinit services
-    self.install_service("^/chronyd")
-    self.install_service("^/chrony", enable=True)
+    self.install_service(self.files_path / "chronyd")
+    self.install_service(self.files_path / "chrony", enable=True)

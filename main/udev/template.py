@@ -3,7 +3,6 @@ pkgver = "256.11"
 pkgrel = 3
 build_style = "meson"
 configure_args = [
-    "--libexecdir=/usr/lib",  # XXX drop libexec
     "-Dacl=enabled",
     "-Dadm-group=false",
     "-Danalyze=false",
@@ -126,7 +125,7 @@ source = (
 )
 sha256 = "5038424744b2ed8c1d7ecc75b00eeffe68528f9789411da60f199d65762d9ba5"
 # the tests that can run are mostly useless
-options = ["!splitudev", "!check"]
+options = ["etcfiles", "!splitudev", "!check"]
 
 
 def init_configure(self):

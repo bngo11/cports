@@ -1,6 +1,6 @@
 pkgname = "chromium"
 # https://chromiumdash.appspot.com/releases?platform=Linux
-pkgver = "146.0.7680.164"
+pkgver = "153.0.8010.36"
 pkgrel = 0
 archs = ["aarch64", "ppc64le", "x86_64"]
 configure_args = [
@@ -54,9 +54,11 @@ configure_args = [
 hostmakedepends = [
     "bash",
     "bison",
+    "esbuild",
     "findutils",
     "git",
     "gn",
+    "go",
     "gperf",
     "hwdata",
     "ninja",
@@ -142,9 +144,9 @@ source = [
     f"https://github.com/chromium-linux-tarballs/chromium-tarballs/releases/download/{pkgver}/chromium-{pkgver}-linux.tar.xz",
     "https://registry.npmjs.org/@rollup/wasm-node/-/wasm-node-4.22.4.tgz",
 ]
-source_paths = [".", "rollup"]
+source_paths = [".", "rollup", "typescript"]
 sha256 = [
-    "ce684e97c122f2fb0d9ccb691c74702cfd67a458b15259547f7093b5251889dc",
+    "5e2e8fe8c990e591b26237ed0fb9747a76f9da3eac439d7a726000879c468735",
     "ee49bf67bd9bee869405af78162d028e2af0fcfca80497404f56b1b99f272717",
 ]
 debug_level = 1
@@ -162,10 +164,6 @@ tool_flags = {
         "-Wno-deprecated-declarations",
         "-Wno-sign-compare",
         "-Wno-shorten-64-to-32",
-        # started crashing in blink and skia with 145.x due to unsafe memcpy
-        # we have a similar issue in webkit with skia, maybe figure it out
-        # there first...
-        "-U_FORTIFY_SOURCE",
     ],
 }
 file_modes = {
@@ -173,7 +171,30 @@ file_modes = {
 }
 hardening = ["!scp"]
 # lol
-options = ["!cross", "!check", "!scanshlibs"]
+options = ["etcfiles", "!cross", "!check", "!scanshlibs"]
+
+match self.profile().arch:
+    case "aarch64":
+        source += [
+            "https://github.com/microsoft/TypeScript/releases/download/v7.0.2/typescript-linux-arm64.tgz"
+        ]
+        sha256 += [
+            "c83d931ac9dd7549cde6e71246aa9d6a9812843023df3e277fe3b5dcf41dd0ea"
+        ]
+    case "ppc64le":
+        source += [
+            "https://github.com/microsoft/TypeScript/releases/download/v7.0.2/typescript-linux-ppc64.tgz"
+        ]
+        sha256 += [
+            "8c30ad95ff40cff8bba2ab294abde3bfee6fa12b2b649f80ec90ef3188842db1"
+        ]
+    case "x86_64":
+        source += [
+            "https://github.com/microsoft/TypeScript/releases/download/v7.0.2/typescript-linux-x64.tgz"
+        ]
+        sha256 += [
+            "7ecad6f67377e831856367ab062ef394f21506a611405bf8ac0ff039348637d3"
+        ]
 
 match self.profile().arch:
     case "ppc64le" | "riscv64":
@@ -183,9 +204,51 @@ match self.profile().arch:
 
 
 def post_patch(self):
+    from cbuild.util import patch
+
+    # replace wrong node with a working one
     self.rm("third_party/node/linux/node-linux-x64/bin/node", force=True)
     self.mkdir("third_party/node/linux/node-linux-x64/bin", parents=True)
     self.ln_s("/usr/bin/node", "third_party/node/linux/node-linux-x64/bin/node")
+    # replace wrong esbuild with a working one
+    self.rm(
+        "third_party/devtools-frontend/src/third_party/esbuild/esbuild",
+        force=True,
+    )
+    self.ln_s(
+        "/usr/bin/esbuild",
+        "third_party/devtools-frontend/src/third_party/esbuild/esbuild",
+    )
+    self.rm(
+        "third_party/devtools-frontend/src/node_modules/esbuild",
+        recursive=True,
+        force=True,
+    )
+    self.ln_s(
+        "/usr/lib/node_modules/esbuild",
+        "third_party/devtools-frontend/src/node_modules/esbuild",
+    )
+    # replace wrong gperf with a working one
+    self.rm("third_party/gperf/cipd/bin/gperf", force=True)
+    self.ln_s("/usr/bin/gperf", "third_party/gperf/cipd/bin/gperf")
+    # lol
+    self.mkdir("third_party/dawn/tools/golang/linux-unknown/bin", parents=True)
+    self.ln_s(
+        "/usr/bin/go", "third_party/dawn/tools/golang/linux-unknown/bin/go"
+    )
+    # replace x64 typescript with the one for our correct platform
+    # and patch the library to suit whatever google is doing
+    self.rm("third_party/typescript/linux-amd64/src", recursive=True)
+    patch.patch(
+        self,
+        list(
+            (self.cwd / "third_party/typescript/linux-amd64/3pp/patches").glob(
+                "*.patch"
+            )
+        ),
+        wrksrc="typescript",
+    )
+    self.mv("typescript", "third_party/typescript/linux-amd64/src")
 
     self.cp(self.files_path / "unbundle.sh", ".")
     self.cp(self.files_path / "pp-data.sh", ".")
@@ -213,7 +276,7 @@ def configure(self):
         "flac",
         "fontconfig",
         "freetype",
-        "harfbuzz-ng",
+        "harfbuzz",
         "highway",
         "libjpeg",
         "libpng",
@@ -314,8 +377,6 @@ def install(self):
     self.install_file(f"{srcp}/libvulkan.so.1", dstp, mode=0o755)
     self.install_file(f"{srcp}/libvk_swiftshader.so", dstp, mode=0o755)
     self.install_file(f"{srcp}/vk_swiftshader_icd.json", dstp, mode=0o755)
-    self.install_file(f"{srcp}/xdg-mime", dstp, mode=0o755)
-    self.install_file(f"{srcp}/xdg-settings", dstp, mode=0o755)
 
     self.install_file(f"{srcp}/*.bin", dstp, glob=True)
     self.install_file(f"{srcp}/*.pak", dstp, glob=True)

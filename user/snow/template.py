@@ -1,5 +1,5 @@
 pkgname = "snow"
-pkgver = "1.3.0"
+pkgver = "1.5.0"
 pkgrel = 0
 build_style = "cargo"
 hostmakedepends = [
@@ -7,25 +7,23 @@ hostmakedepends = [
     "pkgconf",
 ]
 makedepends = [
+    "alsa-lib-devel",
     "libgit2-devel",
-    "sdl2-devel",
+    "sdl2-compat-devel",
     "zstd-devel",
 ]
 pkgdesc = "Classic Macintosh emulator"
 license = "MIT"
 url = "https://snowemu.com"
 source = f"https://github.com/twvd/snow/archive/refs/tags/v{pkgver}.tar.gz"
-sha256 = "0b6bd694d75e2ad9043be635b40e1c7b06e7e37665d64464405b6e83e0d5993b"
+sha256 = "00ee7515a8ed5e977e46b5f87a02ce964049613a5b909203b77b2feb277193a0"
 
 if self.profile().wordsize == 32:
     broken = "needs atomic64"
 
 
 def install(self):
-    self.install_bin(
-        f"target/{self.profile().triplet}/release/snow_frontend_egui",
-        name="snowemu",
-    )
+    self.install_bin(f"target/{self.profile().triplet}/release/snowemu")
     self.install_license("LICENSE")
     with self.pushd("assets"):
         self.install_file(

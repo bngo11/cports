@@ -1,5 +1,5 @@
 pkgname = "kparts"
-pkgver = "6.23.0"
+pkgver = "6.29.0"
 pkgrel = 0
 build_style = "cmake"
 make_check_env = {"QT_QPA_PLATFORM": "offscreen"}
@@ -17,9 +17,9 @@ pkgdesc = "KDE Plugin framework for UI components"
 license = (
     "LGPL-2.1-only AND LGPL-2.1-or-later AND (LGPL-2.1-only OR LGPL-3.0-only)"
 )
-url = "https://api.kde.org/frameworks/kparts/html"
+url = "https://community.kde.org/Frameworks"
 source = f"$(KDE_SITE)/frameworks/{pkgver[: pkgver.rfind('.')]}/kparts-{pkgver}.tar.xz"
-sha256 = "799e14c2b42f9f73f6dfb35d1faaed632f144171f090aba2f74d04605b9bcc12"
+sha256 = "379d6b0fa84eb9614f7677e93b43c5ff52481e19ac83a7a158233810a39e75a7"
 hardening = ["vis"]
 
 

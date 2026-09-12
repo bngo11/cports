@@ -1,11 +1,11 @@
 pkgname = "mergiraf"
-pkgver = "0.16.3"
+pkgver = "0.18.0"
 pkgrel = 0
 build_style = "cargo"
 hostmakedepends = ["cargo-auditable"]
-checkdepends = ["git"]
+checkdepends = ["git", "jj"]
 pkgdesc = "Syntax-aware git merge driver"
 license = "GPL-3.0-only"
 url = "https://mergiraf.org"
 source = f"https://codeberg.org/mergiraf/mergiraf/archive/v{pkgver}.tar.gz"
-sha256 = "c2f3f6b50496cbadb7d9caeb6cfc4e0dab8f99aaed5d9a560b30208cb68108f0"
+sha256 = "28b5187a1cd201c96aee6732dda9084406ad3001ed93fcff4e9fc3b740dbe471"

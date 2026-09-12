@@ -1,6 +1,6 @@
 pkgname = "gtk+3"
 pkgver = "3.24.43"
-pkgrel = 5
+pkgrel = 6
 build_style = "meson"
 configure_args = [
     "-Dbroadway_backend=true",
@@ -51,10 +51,10 @@ makedepends = [
 ]
 depends = [
     "adwaita-icon-theme",
+    "glycin-loaders",  # svg
     "gobject-introspection-freedesktop",
     "gtk+3-update-icon-cache",
     "shared-mime-info",
-    "virtual:gdk-pixbuf-loader-svg!librsvg",
 ]
 checkdepends = [
     "adwaita-icon-theme",
@@ -73,7 +73,7 @@ sha256 = "7e04f0648515034b806b74ae5d774d87cffb1a2a96c468cb5be476d51bf2f3c7"
 hardening = ["!int"]
 # gtk3 can't handle seatless wayland displays; also
 # g_log_set_writer_func called multiple times in tests
-options = ["!cross", "!check"]
+options = ["etcfiles", "!cross", "!check"]
 
 
 @subpackage("gtk+3-update-icon-cache")

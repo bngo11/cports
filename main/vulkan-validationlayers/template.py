@@ -1,10 +1,11 @@
 pkgname = "vulkan-validationlayers"
-pkgver = "1.4.334"
+pkgver = "1.4.360"
 pkgrel = 0
 build_style = "cmake"
 configure_args = [
     "-DCMAKE_BUILD_TYPE=Release",
     "-DBUILD_WERROR=OFF",
+    "-DUPDATE_DEPS=OFF",
 ]
 hostmakedepends = [
     "cmake",
@@ -25,13 +26,14 @@ license = "Apache-2.0"
 url = "https://vulkan.lunarg.com/doc/sdk/latest/linux/khronos_validation_layer.html"
 source = [
     f"https://github.com/KhronosGroup/Vulkan-ValidationLayers/archive/refs/tags/v{pkgver}.tar.gz",
-    "https://github.com/KhronosGroup/SPIRV-Headers/archive/f2e4bd213104fe323a01e935df56557328d37ac8.tar.gz",
+    # check scripts/known_good.json
+    "https://github.com/KhronosGroup/SPIRV-Headers/archive/29981f65241605e08b0ede4cfeb999fe3b723c6a.tar.gz",
 ]
 source_paths = [
     ".",
     "spirv-headers",
 ]
 sha256 = [
-    "8a730695f9e0181febf66847181c14830d2f7d64cb32006fb9e273a1bb86b76c",
-    "4e26fecd4142ca178df6b8f24485d2215ef0621de534cd277faeb33d3e06d897",
+    "550c5ff6a8fd7859726fd3c5fdc5b75a774fcddc5db209c15227fbd92e34c824",
+    "232899f1ad4104fb5bc377b94596c7621575eee62ad9a9e8f929b63a7dd8a7ad",
 ]

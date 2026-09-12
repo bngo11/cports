@@ -1,6 +1,6 @@
 pkgname = "rsync"
 pkgver = "3.4.1"
-pkgrel = 0
+pkgrel = 1
 build_style = "gnu_configure"
 configure_args = [
     "--with-rrsync",
@@ -28,13 +28,13 @@ license = "GPL-3.0-only"
 url = "https://rsync.samba.org"
 source = f"https://www.samba.org/ftp/rsync/src/rsync-{pkgver}.tar.gz"
 sha256 = "2924bcb3a1ed8b551fc101f740b9f0fe0a202b115027647cf69850d65fd88c52"
-# FIXME int: crashes in match_sums (match.c) after a while in partial mode
-hardening = ["vis", "cfi", "!int"]
-
 tool_flags = {
     # ipv6 on musl: https://bugzilla.samba.org/show_bug.cgi?id=10715
     "CFLAGS": ["-DINET6"]
 }
+# FIXME int: crashes in match_sums (match.c) after a while in partial mode
+hardening = ["vis", "cfi", "!int"]
+options = ["etcfiles"]
 
 if self.profile().arch == "x86_64":
     configure_args += ["--enable-roll-simd"]
@@ -47,7 +47,7 @@ def post_extract(self):
 def post_install(self):
     self.install_file(self.files_path / "rsyncd.conf", "etc")
     self.install_file(
-        self.files_path / "rsyncd.sh", "usr/libexec", mode=0o755, name="rsyncd"
+        self.files_path / "rsyncd.sh", "usr/lib", mode=0o755, name="rsyncd"
     )
     self.install_service(self.files_path / "rsyncd")
 

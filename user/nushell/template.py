@@ -1,15 +1,18 @@
 pkgname = "nushell"
-pkgver = "0.110.0"
+pkgver = "0.114.1"
 pkgrel = 0
 build_style = "cargo"
 make_build_args = [
     "--no-default-features",
-    "--features=plugin,trash-support,sqlite,native-tls,network",
+    "--features=plugin,trash-support,lsp,local-socket,system-clipboard,sqlite,native-tls,network",
     "--workspace",
 ]
 make_check_args = [
     "--",
+    "--test-threads=1",
     "--skip=shell::environment::env::path_is_a_list_in_repl",
+    "--skip=shell::environment::env::env_shlvl_in_exec_repl",
+    "--skip=shell::environment::env::env_shlvl_in_repl",
 ]
 hostmakedepends = ["cargo-auditable", "pkgconf"]
 makedepends = [
@@ -23,7 +26,7 @@ pkgdesc = "Shell with a focus on structured data"
 license = "MIT"
 url = "https://www.nushell.sh"
 source = f"https://github.com/nushell/nushell/archive/refs/tags/{pkgver}.tar.gz"
-sha256 = "e4c95f743cea3d985ab90e03fd35707a46eef926d407ed363f994155c1ca5055"
+sha256 = "48ef2fb6bb3ec2b1dcff87a792aeebdfab10b29f3119a62291075b17e4ad25d5"
 _plugins = [
     "polars",
     "formats",
@@ -35,6 +38,8 @@ _plugins = [
 if self.profile().wordsize == 32:
     # TODO: probably fixable
     broken = "needs atomicu64"
+elif self.profile().arch in ["loongarch64"]:
+    broken = "unresolved import self::consts when building nix"
 
 
 def install(self):

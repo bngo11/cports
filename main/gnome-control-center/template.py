@@ -1,10 +1,7 @@
 pkgname = "gnome-control-center"
-pkgver = "49.1"
+pkgver = "50.1"
 pkgrel = 0
 build_style = "meson"
-configure_args = [
-    "--libexecdir=/usr/lib",  # XXX drop libexec
-]
 make_check_wrapper = ["wlheadless-run", "--"]
 hostmakedepends = [
     "blueprint-compiler",
@@ -71,7 +68,7 @@ pkgdesc = "GNOME control center"
 license = "GPL-2.0-or-later"
 url = "https://gitlab.gnome.org/GNOME/gnome-control-center"
 source = f"$(GNOME_SITE)/gnome-control-center/{pkgver.split('.')[0]}/gnome-control-center-{pkgver}.tar.xz"
-sha256 = "5402eff8f23163a755dec249366c1b3a65e80f0da60f0774a740d1e58746f869"
+sha256 = "eb832491d088e4f7426e8a592b10428a45a5736c0bffe2105c51c4c68c3a51dd"
 options = ["!lintpixmaps"]
 
 

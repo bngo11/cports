@@ -1,9 +1,7 @@
 pkgname = "kconfig"
-pkgver = "6.23.0"
+pkgver = "6.29.0"
 pkgrel = 0
 build_style = "cmake"
-# XXX drop libexec
-configure_args = ["-DCMAKE_INSTALL_LIBEXECDIR=/usr/lib"]
 # FIXME: kconfigtest can work with right env
 make_check_args = ["-E", "kconfigcore-(kconfigtest|test_kconf_update)"]
 make_check_env = {"QT_QPA_PLATFORM": "offscreen"}
@@ -17,9 +15,9 @@ makedepends = [
 checkdepends = ["bash", "dbus"]
 pkgdesc = "KDE Persistent platform-independent application settings"
 license = "LGPL-2.0-or-later AND LGPL-2.0-only AND LGPL-2.1-or-later"
-url = "https://api.kde.org/frameworks/kconfig/html"
+url = "https://community.kde.org/Frameworks"
 source = f"$(KDE_SITE)/frameworks/{pkgver[: pkgver.rfind('.')]}/kconfig-{pkgver}.tar.xz"
-sha256 = "6d96d6a6b9e66e027a17284c48261ba81e1262fbd382fcdddc248107a9ca95ee"
+sha256 = "a0e902865763fd4cd1c86973c316069f210492923d7b8065d5052c539ae46b91"
 hardening = ["vis"]
 
 

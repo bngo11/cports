@@ -1,9 +1,9 @@
 pkgname = "evolution-data-server"
-pkgver = "3.58.1"
-pkgrel = 1
+pkgver = "3.60.2"
+pkgrel = 0
 build_style = "cmake"
 configure_args = [
-    "-DLIBEXEC_INSTALL_DIR=/usr/lib",  # XXX drop libexec
+    "-DLIBEXEC_INSTALL_DIR=/usr/lib",
     "-DWITH_LIBDB=OFF",
     "-DSYSCONF_INSTALL_DIR=/etc",
     "-DENABLE_INTROSPECTION=ON",
@@ -45,8 +45,8 @@ pkgdesc = "Centralized access to appointments and contacts"
 license = "LGPL-2.0-or-later"
 url = "https://gitlab.gnome.org/GNOME/evolution-data-server"
 source = f"$(GNOME_SITE)/evolution-data-server/{pkgver[:-2]}/evolution-data-server-{pkgver}.tar.xz"
-sha256 = "a914928814ef887f0979ba78ea8d7bcc98f96cf07cbb70b0051980bd90ec35f0"
-options = ["!cross", "!lintpixmaps"]
+sha256 = "2084dbdac396371b365d504c1ff45866ba8dca2f1252e5da1d3d9c33abdc1286"
+options = ["etcfiles", "!cross", "!lintpixmaps"]
 
 
 def post_install(self):

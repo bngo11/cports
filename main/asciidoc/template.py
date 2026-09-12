@@ -1,6 +1,6 @@
 pkgname = "asciidoc"
 pkgver = "10.2.1"
-pkgrel = 2
+pkgrel = 3
 build_style = "python_pep517"
 hostmakedepends = [
     "docbook-xsl-nons",
@@ -17,7 +17,7 @@ url = "https://asciidoc.org"
 source = f"$(PYPI_SITE)/a/asciidoc/asciidoc-{pkgver}.tar.gz"
 sha256 = "d9f13c285981b3c7eb660d02ca0a2779981e88d48105de81bb40445e60dddb83"
 # apparently only supports tox now and that's useless
-options = ["!check"]
+options = ["!check", "etcfiles"]
 
 
 def post_install(self):

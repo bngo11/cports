@@ -1,9 +1,7 @@
 pkgname = "kwin-x11"
-pkgver = "6.6.1"
-pkgrel = 0
+pkgver = "6.7.4"
+pkgrel = 1
 build_style = "cmake"
-# XXX drop libexec
-configure_args = ["-DCMAKE_INSTALL_LIBEXECDIR=/usr/lib"]
 make_check_args = [
     "-E",
     "(kwin-testClientMachine"  # initTestCase() segfaults in libc.so after 5s
@@ -15,6 +13,7 @@ make_check_args = [
     + "|kwin-testWindowRules"  # flakes
     + "|kwin-testInputMethod"  # flakes
     + "|kwin-testX11Window"  # flaky subtests (especially testStackAboveFromApplication)
+    + "|kwin-testXdgShellWindowRules"  # mostly fails
     + "|kwin-testXwaylandInput"  # flaky testPointerEnterLeaveSsd() '!window->readyForPainting()' returned FALSE
     + "|kwin-testPointerInput"  # flaky segfaults of testConfineToScreenGeometry subtests on loongarch64
     + ")",
@@ -82,7 +81,7 @@ license = (
 )
 url = "https://invent.kde.org/plasma/kwin-x11"
 source = f"$(KDE_SITE)/plasma/{'.'.join(pkgver.split('.')[0:3])}/kwin-x11-{pkgver}.tar.xz"
-sha256 = "3304d33277f20db1daee4a90d7afe95d1301c1036f8d048a75c62611c3e01d72"
+sha256 = "2c471ec076532b657a101761a3505ae4521aca3d90c86d783c813f42622a1e2e"
 hardening = ["vis"]
 
 

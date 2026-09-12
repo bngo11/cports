@@ -1,9 +1,8 @@
 pkgname = "seahorse"
 pkgver = "47.0.1"
-pkgrel = 1
+pkgrel = 2
 build_style = "meson"
 configure_args = [
-    "--libexecdir=/usr/lib",  # XXX drop libexec
     "-Dmanpage=true",
 ]
 hostmakedepends = [

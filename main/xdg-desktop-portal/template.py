@@ -1,5 +1,5 @@
 pkgname = "xdg-desktop-portal"
-pkgver = "1.20.3"
+pkgver = "1.22.1"
 pkgrel = 0
 build_style = "meson"
 hostmakedepends = [
@@ -35,7 +35,7 @@ pkgdesc = "Desktop integration portal"
 license = "LGPL-2.1-or-later"
 url = "https://github.com/flatpak/xdg-desktop-portal"
 source = f"{url}/releases/download/{pkgver}/xdg-desktop-portal-{pkgver}.tar.xz"
-sha256 = "4bfb164937f59107eb1a3cc21abaa948d903c76f3b99fac210cea38ce1da9edc"
+sha256 = "d4879ddb3d65ff1a8f19187497e6f13dc5d267bcac404a5d501218be355753d3"
 
 
 def post_install(self):

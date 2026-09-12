@@ -1,6 +1,6 @@
 pkgname = "gocryptfs"
 pkgver = "2.6.1"
-pkgrel = 2
+pkgrel = 6
 build_style = "go"
 make_build_args = [
     "-ldflags="

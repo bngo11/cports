@@ -1,7 +1,16 @@
 pkgname = "gleam"
-pkgver = "1.14.0"
+pkgver = "1.18.1"
 pkgrel = 0
 build_style = "cargo"
+make_check_args = [
+    "--",
+    # overflows the stack on ppc64le
+    "--skip=type_::tests::no_stack_overflow_for_nested_use",
+    # checks files that would be git ingored, but the tarball is not a git repo
+    "--skip=tests::all_files_have_copyright_notice",
+    # tries to access network to fetch dependency
+    "--skip=tests::escript_success_with_dependency",
+]
 hostmakedepends = ["cargo-auditable"]
 checkdepends = ["erlang", "git", "nodejs"]
 depends = ["erlang"]
@@ -11,7 +20,7 @@ url = "https://gleam.run"
 source = (
     f"https://github.com/gleam-lang/gleam/archive/refs/tags/v{pkgver}.tar.gz"
 )
-sha256 = "2463831e404762b0a759db874907ab475474535ac2e976a9f249196e34ece054"
+sha256 = "0691b50bd3592a549abbbd7a0dea4b11f8930988c1e398d1d1429faf48933a3c"
 
 
 def install(self):

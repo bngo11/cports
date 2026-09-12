@@ -1,17 +1,32 @@
 pkgname = "appstream"
-pkgver = "1.1.1"
+pkgver = "1.1.6"
 pkgrel = 0
 build_style = "meson"
 configure_args = [
-    "--libexecdir=/usr/lib",  # XXX drop libexec
     "-Dapidocs=false",
     "-Dcompose=true",
     "-Dqt=true",
     "-Dstemming=false",
     "-Dsystemd=false",
 ]
+# exclude as-test_yaml - fails with latest libfyaml even:
+# https://github.com/ximion/appstream/issues/756
+make_check_args = [
+    "AppStream:as-validate_metainfo.cli",
+    "AppStream:as-validate_metainfo.compose",
+    "AppStream:as-test_basic",
+    "AppStream:as-test_xml",
+    "AppStream:as-test_validate",
+    "AppStream:as-test_perf",
+    "AppStream:as-test_misc",
+    "AppStream:as-test_qt-misc",
+    "AppStream:as-test_qt-pool",
+    "AppStream:as-test_compose",
+    "AppStream:as-test_pool",
+]
 hostmakedepends = [
-    "docbook-xsl-nons",
+    "bash-completion",
+    "docbook-xsl",
     "gettext",
     "gobject-introspection",
     "gperf",
@@ -21,6 +36,7 @@ hostmakedepends = [
     "pkgconf",
 ]
 makedepends = [
+    "blake3-devel",
     "cairo-devel",
     "curl-devel",
     "fontconfig-devel",
@@ -40,7 +56,7 @@ url = "https://www.freedesktop.org/wiki/Distributions/AppStream"
 source = (
     f"https://github.com/ximion/appstream/archive/refs/tags/v{pkgver}.tar.gz"
 )
-sha256 = "1615468b8d1e5edb9a9081f81841c8a22439c64bee5f02b008b3b8d5a5204c91"
+sha256 = "f9b79193d2620474bb48d0cd32abd76e002939fce3daa991a1b60642eecbb67f"
 # gir
 options = ["!cross"]
 

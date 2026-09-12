@@ -1,5 +1,5 @@
 pkgname = "kpublictransport"
-pkgver = "25.12.2"
+pkgver = "26.08.0"
 pkgrel = 0
 build_style = "cmake"
 # at least updatetest & cachetest flaky when parallel
@@ -22,11 +22,11 @@ makedepends = [
 ]
 pkgdesc = "KDE library for accessing public transport information"
 license = "LGPL-2.0-or-later"
-url = "https://api.kde.org/kdepim/kpublictransport/html"
+url = "https://community.kde.org/KDE_PIM"
 source = (
     f"$(KDE_SITE)/release-service/{pkgver}/src/kpublictransport-{pkgver}.tar.xz"
 )
-sha256 = "1438289d423cf70059c8e72939d8a51a0c054f046e28bf30a060959d3ddef43b"
+sha256 = "02c84e01ae0b4838a2c3d40acb8b1d4148997131fee305a292e98fd4cd17de71"
 
 
 @subpackage("kpublictransport-devel")

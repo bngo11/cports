@@ -1,6 +1,6 @@
 pkgname = "godot"
-pkgver = "4.4.1"
-pkgrel = 6
+pkgver = "4.7.1"
+pkgrel = 1
 hostmakedepends = [
     "gettext",
     "pkgconf",
@@ -37,7 +37,7 @@ subdesc = "GUI editor"
 license = "MIT"
 url = "https://godotengine.org"
 source = f"https://github.com/godotengine/godot/releases/download/{pkgver}-stable/godot-{pkgver}-stable.tar.xz"
-sha256 = "ddbd6527cdb3ddb02910b383301a5c9117b1c33c777ef1c86d1b1eea43dcb651"
+sha256 = "0230d490846467c4fd772cc70b08dc56cb3adfedd55d039de0af74ddfdba00eb"
 # cross: nah
 options = ["!cross"]
 
@@ -145,10 +145,14 @@ def install(self):
         "misc/dist/linux/org.godotengine.Godot.xml", "usr/share/mime/packages"
     )
     self.install_file(
-        "icon.png", "usr/share/icons/hicolor/256x256/apps", name="godot.png"
+        "misc/logo/icon.png",
+        "usr/share/icons/hicolor/256x256/apps",
+        name="godot.png",
     )
     self.install_file(
-        "icon.svg", "usr/share/icons/hicolor/scalable/apps", name="godot.svg"
+        "misc/logo/icon.svg",
+        "usr/share/icons/hicolor/scalable/apps",
+        name="godot.svg",
     )
     self.install_man("misc/dist/linux/godot.6")
     self.install_bin(

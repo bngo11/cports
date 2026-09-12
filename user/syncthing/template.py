@@ -1,5 +1,5 @@
 pkgname = "syncthing"
-pkgver = "2.0.15"
+pkgver = "2.1.3"
 pkgrel = 0
 build_style = "go"
 make_build_args = [
@@ -21,7 +21,7 @@ pkgdesc = "Continuous file synchronization program"
 license = "MPL-2.0"
 url = "https://syncthing.net"
 source = f"https://github.com/syncthing/syncthing/archive/v{pkgver}.tar.gz"
-sha256 = "82ee7a343ac0b5434ef04c7dd6630dca848358039a9edf27ee9a6164e3bdd0fb"
+sha256 = "177792c697f61fc25f02d8fc8923dfc57ebb35753bd92c8d32a73d553446d117"
 
 
 if self.profile().wordsize == 32:
@@ -71,7 +71,7 @@ def post_install(self):
         name="syncthing.svg",
     )
 
-    self.install_service("^/syncthing.user")
+    self.install_service(self.files_path / "syncthing.user")
 
 
 @subpackage("syncthing-relaysrv")

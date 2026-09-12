@@ -1,6 +1,6 @@
 pkgname = "snapper"
 pkgver = "0.12.1"
-pkgrel = 4
+pkgrel = 5
 build_style = "gnu_configure"
 configure_args = [
     "--disable-systemd",
@@ -39,6 +39,7 @@ license = "GPL-2.0-only"
 url = "https://github.com/openSUSE/snapper"
 source = f"{url}/archive/refs/tags/v{pkgver}.tar.gz"
 sha256 = "eec9de03c8c224ac06e0b2970fde4c37cf89f848b4b49c904e8ee00bb7c3aff3"
+options = ["etcfiles"]
 
 
 def post_install(self):

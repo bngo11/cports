@@ -1,9 +1,7 @@
 pkgname = "discover"
-pkgver = "6.6.1"
+pkgver = "6.7.4"
 pkgrel = 0
 build_style = "cmake"
-# XXX drop libexec
-configure_args = ["-DCMAKE_INSTALL_LIBEXECDIR=/usr/lib"]
 # fails in chroot env, needs some testdata
 make_check_args = ["-E", "flatpaktest|CategoriesTest"]
 make_check_wrapper = [
@@ -60,7 +58,8 @@ pkgdesc = "KDE application manager"
 license = "(GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only)"
 url = "https://userbase.kde.org/Discover"
 source = f"$(KDE_SITE)/plasma/{pkgver}/discover-{pkgver}.tar.xz"
-sha256 = "54fbbbe8a63e2204ecde0df39a9cc500cc0fc202e1e317452f971a2d13295836"
+sha256 = "f8b809c9aaa25c1d636b0bdf144d87a3ee659d5d80f26961d3116a627fef859d"
+options = ["etcfiles"]
 
 
 if self.profile().arch in ["aarch64", "ppc64le", "x86_64"]:

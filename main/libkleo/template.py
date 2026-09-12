@@ -1,6 +1,6 @@
 pkgname = "libkleo"
-pkgver = "25.12.2"
-pkgrel = 1
+pkgver = "26.08.0"
+pkgrel = 0
 build_style = "cmake"
 # fails on aarch64 at least
 # newkeyapprovaldialogtest has wayland die
@@ -18,7 +18,6 @@ hostmakedepends = [
 ]
 makedepends = [
     "boost-devel",
-    "gpgme-qt-devel",
     "kcodecs-devel",
     "kcolorscheme-devel",
     "kcompletion-devel",
@@ -29,6 +28,7 @@ makedepends = [
     "ktextaddons-devel",
     "kwidgetsaddons-devel",
     "libgpg-error-devel",
+    "qgpgme-devel",
     "qt6-qtdeclarative-devel",
 ]
 checkdepends = ["xwayland-run"]
@@ -36,10 +36,11 @@ pkgdesc = "KDE PIM cryptography library"
 license = "GPL-3.0-or-later"
 url = "https://invent.kde.org/pim/libkleo"
 source = f"$(KDE_SITE)/release-service/{pkgver}/src/libkleo-{pkgver}.tar.xz"
-sha256 = "6b055214ba7c5c6da75454b9f2f0cf90213511b73cc18a47964ff553407697f7"
+sha256 = "6bfbd13e70da660a4be75821083a02fb62739aa21b3f2068b0679b328a571826"
+options = ["etcfiles"]
 
 
 @subpackage("libkleo-devel")
 def _(self):
-    self.depends += ["gpgme-qt-devel"]
+    self.depends += ["qgpgme-devel"]
     return self.default_devel()

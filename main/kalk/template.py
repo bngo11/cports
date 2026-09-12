@@ -1,5 +1,5 @@
 pkgname = "kalk"
-pkgver = "25.12.2"
+pkgver = "26.08.0"
 pkgrel = 0
 build_style = "cmake"
 hostmakedepends = [
@@ -22,5 +22,5 @@ pkgdesc = "KDE Calculator"
 license = "GPL-3.0-or-later AND CC0-1.0"
 url = "https://apps.kde.org/kalk"
 source = f"$(KDE_SITE)/release-service/{pkgver}/src/kalk-{pkgver}.tar.xz"
-sha256 = "336acb717ddeb4d637139096d098b519cdf897b3e072133eb013dd6812f0be1d"
+sha256 = "0952c0d918fa962015fb8c0f9777beb9b85d8eb0a2a0351797a19c1a7815a88b"
 hardening = ["vis"]

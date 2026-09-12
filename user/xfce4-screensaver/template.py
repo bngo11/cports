@@ -4,9 +4,6 @@ pkgrel = 1
 # workaround for lack of gdbus port
 _dbus_gmain_rev = "623a4f3386a675060335e20afd810c6e10ae2cc8"
 build_style = "gnu_configure"
-configure_args = [
-    "--libexecdir=/usr/lib",  # XXX drop libexec
-]
 hostmakedepends = [
     "automake",
     "gettext-devel",
@@ -47,7 +44,7 @@ sha256 = [
     "c1206c06fd625e864e06dbf43bab8543837ac35cbefa03457eda152cdf60c9ba",
 ]
 # FIXME lintpixmaps
-options = ["!lintpixmaps"]
+options = ["etcfiles", "!lintpixmaps"]
 
 
 def post_extract(self):

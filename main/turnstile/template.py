@@ -3,7 +3,6 @@ pkgver = "0.1.11"
 pkgrel = 0
 build_style = "meson"
 configure_args = [
-    "--libexecdir=/usr/lib",  # XXX libexec
     "-Dmanage_rundir=true",
     "-Dpamdir=/usr/lib/pam.d",
 ]
@@ -23,7 +22,7 @@ file_modes = {
     "+usr/lib/dinit.d/user/boot.d": ("root", "root", 0o755, True),
 }
 hardening = ["vis", "cfi"]
-options = ["brokenlinks", "!splitdinit"]
+options = ["etcfiles", "brokenlinks", "!splitdinit"]
 
 
 def post_install(self):

@@ -1,6 +1,6 @@
 pkgname = "luanti"
-pkgver = "5.14.0"
-pkgrel = 0
+pkgver = "5.16.1"
+pkgrel = 1
 build_style = "cmake"
 configure_args = [
     "-DBUILD_SERVER=TRUE",
@@ -8,7 +8,8 @@ configure_args = [
     "-DENABLE_LTO=OFF",
     "-DENABLE_PROMETHEUS=ON",
     "-DENABLE_UPDATE_CHECKER=OFF",
-    "-DUSE_SDL2=ON",
+    "-DUSE_SDL2=OFF",
+    "-DUSE_SDL3=ON",
 ]
 hostmakedepends = [
     "cmake",
@@ -36,7 +37,7 @@ makedepends = [
     "openal-soft-devel",
     "openssl3-devel",
     "prometheus-cpp-devel",
-    "sdl2-devel",
+    "sdl3-devel",
     "sqlite-devel",
     "zstd-devel",
 ]
@@ -48,11 +49,11 @@ url = "https://www.luanti.org"
 source = (
     f"https://github.com/luanti-org/luanti/archive/refs/tags/{pkgver}.tar.gz"
 )
-sha256 = "b9f561fa37db3c7ea1b8ba15cfede8282b7a79b9e939b0357269c8b037cf5aea"
+sha256 = "57926752365a17d3bf64945ea04dc63cc446a8863037b043b97799af30126b6b"
 tool_flags = {"CFLAGS": ["-DNDEBUG"], "CXXFLAGS": ["-DNDEBUG"]}
 hardening = ["!int"]
 # see below
-options = []
+options = ["etcfiles"]
 
 if self.profile().arch == "ppc64le":
     # FIXME: testLuaDestructors fails since luajit seems to not unwind destructors on ppc64le
@@ -70,8 +71,6 @@ def post_install(self):
         "etc/luanti",
         name="minetest.conf",
     )
-    # dead symlink
-    self.uninstall("usr/share/luanti/client/shaders/Irrlicht")
 
 
 @subpackage("luanti-common")

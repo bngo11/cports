@@ -1,12 +1,11 @@
 pkgname = "flatpak"
-pkgver = "1.16.1"
-pkgrel = 1
+pkgver = "1.18.1"
+pkgrel = 0
 build_style = "meson"
 configure_args = [
     "-Ddconf=enabled",
     "-Ddbus_config_dir=/usr/share/dbus-1/system.d",
     "-Dgdm_env_file=true",
-    "-Dhttp_backend=curl",
     "-Dlibzstd=enabled",
     "-Dselinux_module=disabled",
     "-Dsystem_bubblewrap=/usr/bin/bwrap",
@@ -67,9 +66,9 @@ pkgdesc = "Linux application sandboxing and distribution framework"
 license = "LGPL-2.1-or-later"
 url = "https://flatpak.org"
 source = f"https://github.com/flatpak/flatpak/releases/download/{pkgver}/flatpak-{pkgver}.tar.xz"
-sha256 = "2b47e8f2d90d35d29339ed78e1a6eabb36eefa9cfa5a5ca3b0d1f27502c43675"
+sha256 = "bc683fc916ed21c0524bb064f358c2ac18586b8ec88c76f2f7f289877521631c"
 # test runner expects a different env (possible FIXME?)
-options = ["!check", "!cross"]
+options = ["etcfiles", "!check", "!cross"]
 
 
 def post_install(self):

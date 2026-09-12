@@ -1449,7 +1449,7 @@ def do_print_build_graph(tgt):
 
 def _get_unbuilt(outdated=False):
     from cbuild.core import chroot, template, paths
-    from cbuild.apk import util
+    import json
     import subprocess
 
     cats = opt_allowcat.strip().split()
@@ -1467,8 +1467,6 @@ def _get_unbuilt(outdated=False):
         rbase = repop / tarch
         repof = rbase / "Packages.adb"
         if not repof.is_file():
-            repof = rbase / "APKINDEX.tar.gz"
-        if not repof.is_file():
             return
         outp = subprocess.run(
             [
@@ -1480,23 +1478,27 @@ def _get_unbuilt(outdated=False):
                 paths.bldroot(),
                 "--repository",
                 str(repof),
-                "search",
+                "query",
                 "--from",
                 "none",
-                "-e",
-                "-o",
-                "-a",
+                "--format=json",
+                "--fields=name,origin,version",
+                "--all-matches",
+                "*",
             ],
             capture_output=True,
         )
         if outp.returncode != 0:
             return
-        for ver in outp.stdout.strip().split():
-            vers = ver.strip().decode()
-            pn, pv = util.get_namever(vers)
+        jsn = json.loads(outp.stdout.decode())
+        for ver in jsn:
+            if "origin" in ver:
+                pn = ver["origin"]
+            else:
+                pn = ver["name"]
             if pn in repovers:
                 continue
-            repovers[pn] = pv
+            repovers[pn] = ver["version"]
 
     # stage versions come first
     for cat in cats:
@@ -2076,7 +2078,7 @@ def _bulkpkg(pkgs, statusf, do_build, do_raw, version):
                     for tmpn in flist:
                         do_build.append(tmpn)
                 else:
-                    print(" ".join(flist))
+                    print((" " if not version else "\n").join(flist))
         else:
             for pn in flist:
                 tp = templates[pn]
@@ -2340,7 +2342,7 @@ def do_prepare_upgrade(tgt):
 
 def do_bump_pkgver(tgt):
     from cbuild.core import chroot, logger, template, errors
-    from cbuild.apk import cli as acli
+    from cbuild.apk import util as autil
     import pathlib
 
     if len(cmdline.command) != 3:
@@ -2349,7 +2351,7 @@ def do_bump_pkgver(tgt):
     pkgn = cmdline.command[1]
     pkgv = cmdline.command[2]
 
-    if not acli.check_version(pkgv):
+    if not autil.version_validate(pkgv):
         raise errors.CbuildException(f"version '{pkgv}' is invalid")
 
     try:

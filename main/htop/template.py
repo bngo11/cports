@@ -1,5 +1,5 @@
 pkgname = "htop"
-pkgver = "3.4.1"
+pkgver = "3.5.3"
 pkgrel = 0
 build_style = "gnu_configure"
 configure_args = [
@@ -28,8 +28,14 @@ pkgdesc = "Interactive process viewer"
 license = "GPL-2.0-only"
 url = "https://htop.dev"
 source = f"https://github.com/htop-dev/htop/releases/download/{pkgver}/htop-{pkgver}.tar.xz"
-sha256 = "904f7d4580fc11cffc7e0f06895a4789e0c1c054435752c151e812fead9f6220"
+sha256 = "a8b164386494cb85bb255a415a3f5f80afe7a0c4491da5d113b3a0f951087e65"
 # CFI cannot work with libsensors dlsym() stuff
 hardening = ["vis", "!cfi"]
-# FIXME lintpixmaps
-options = ["!lintpixmaps"]
+
+
+def post_install(self):
+    self.rename(
+        "usr/share/pixmaps/htop.png",
+        "usr/share/icons/hicolor/128x128/apps/htop.png",
+        relative=False,
+    )

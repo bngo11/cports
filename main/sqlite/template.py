@@ -1,6 +1,7 @@
+# apply useful changes to user/sqlcipher
 pkgname = "sqlite"
-pkgver = "3.50.4"
-_amalg = "3500400"
+pkgver = "3.53.3"
+_amalg = "3530300"
 pkgrel = 0
 build_style = "configure"
 configure_args = [
@@ -13,13 +14,14 @@ configure_args = [
     "--editline",
     "--soname=legacy",
 ]
+make_build_args = ["libsqlite3.so", "libsqlite3.a"]
 hostmakedepends = ["pkgconf"]
 makedepends = ["libedit-readline-devel", "zlib-ng-compat-devel"]
 pkgdesc = "SQL Database Engine in a C library"
 license = "blessing"
 url = "https://sqlite.org"
-source = f"https://sqlite.org/2025/sqlite-autoconf-{_amalg}.tar.gz"
-sha256 = "a3db587a1b92ee5ddac2f66b3edb41b26f9c867275782d46c3a088977d6a5b18"
+source = f"https://sqlite.org/2026/sqlite-autoconf-{_amalg}.tar.gz"
+sha256 = "c917d7db16648ec95f714974ace5e5dcf46b7dc70e26600a0a102a3141125db0"
 # no tests
 options = ["!parallel", "!check"]
 
@@ -51,6 +53,12 @@ else:
     _cflags += ["-DSHA3_BYTEORDER=1234", "-DSQLITE_BYTEORDER=1234"]
 
 tool_flags = {"CFLAGS": _cflags}
+
+
+def post_build(self):
+    # compile with extra flag to get .recover command
+    # this is security-sensitive so it should not be in the library
+    self.make.build(["sqlite3", "CFLAGS=-DSQLITE_ENABLE_DBPAGE_VTAB"])
 
 
 @subpackage("sqlite-devel")

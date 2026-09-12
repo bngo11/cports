@@ -1,5 +1,5 @@
 pkgname = "gallery-dl"
-pkgver = "1.30.10"
+pkgver = "1.32.9"
 pkgrel = 0
 build_style = "python_pep517"
 make_check_args = [
@@ -17,9 +17,9 @@ depends = ["python-requests"]
 checkdepends = ["python-pytest", *depends]
 pkgdesc = "CLI program to download image galleries/collections"
 license = "GPL-2.0-or-later"
-url = "https://github.com/mikf/gallery-dl"
+url = "https://codeberg.org/mikf/gallery-dl"
 source = f"{url}/archive/refs/tags/v{pkgver}.tar.gz"
-sha256 = "e5f6c1bbf1f6478909c291042f4d763f4ba92f695d29c920bf7266fc0d65d9dc"
+sha256 = "5a69dcbf5aeb3a32db8de5c70b0dd2e29e6633707ebe2bbeeeca5b632be78a75"
 
 
 def pre_build(self):

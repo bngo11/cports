@@ -1,5 +1,5 @@
 pkgname = "llvm"
-pkgver = "22.1.3"
+pkgver = "22.1.8"
 pkgrel = 0
 build_style = "cmake"
 configure_args = [
@@ -53,7 +53,7 @@ pkgdesc = "Low Level Virtual Machine"
 license = "Apache-2.0 WITH LLVM-exception AND NCSA"
 url = "https://llvm.org"
 source = f"https://github.com/llvm/llvm-project/releases/download/llvmorg-{pkgver}/llvm-project-{pkgver}.src.tar.xz"
-sha256 = "2488c33a959eafba1c44f253e5bbe7ac958eb53fa626298a3a5f4b87373767cd"
+sha256 = "922f1817a0df7b1489272d18134ee0087a8b068828f87ac63b9861b1a9965888"
 # reduce size of debug symbols
 debug_level = 1
 # lto does not kick in until stage 2
@@ -94,30 +94,29 @@ if self.stage > 0:
         "linux-headers",
     ]
     # enable LTO except on riscv where it's broken
-    if self.stage >= 2:
-        # also use llvm-bootstrap
-        if not self.profile().cross:
-            hostmakedepends += ["llvm-bootstrap"]
-            # set all the stuff that matters
-            configure_args += [
-                "-DCMAKE_AR=/usr/lib/llvm-bootstrap/bin/llvm-ar",
-                "-DCMAKE_NM=/usr/lib/llvm-bootstrap/bin/llvm-nm",
-                "-DCMAKE_RANLIB=/usr/lib/llvm-bootstrap/bin/llvm-ranlib",
-                "-DLLVM_USE_LINKER=/usr/lib/llvm-bootstrap/bin/ld.lld",
-            ]
-            # not fun but stuff used during build may be using symbols from
-            # a newer version of libcxx so we need to point it to bootstrap
-            tool_flags["LDFLAGS"] += [
-                "--ld-path=/usr/lib/llvm-bootstrap/bin/ld.lld",
-                "-L/usr/lib/llvm-bootstrap/lib",
-            ]
-            # this so it resolves at runtime too (e.g. -tblgen runs)
-            make_build_env = {"LD_LIBRARY_PATH": "/usr/lib/llvm-bootstrap/lib"}
-        else:
-            configure_args += ["-DLLVM_ENABLE_LLD=ON"]
-            hostmakedepends += ["llvm", "clang-tools-extra", "mlir"]
+    # also use llvm-bootstrap
+    if not self.profile().cross:
+        hostmakedepends += ["llvm-bootstrap"]
+        # set all the stuff that matters
+        configure_args += [
+            "-DCMAKE_AR=/usr/lib/llvm-bootstrap/bin/llvm-ar",
+            "-DCMAKE_NM=/usr/lib/llvm-bootstrap/bin/llvm-nm",
+            "-DCMAKE_RANLIB=/usr/lib/llvm-bootstrap/bin/llvm-ranlib",
+            "-DLLVM_USE_LINKER=/usr/lib/llvm-bootstrap/bin/ld.lld",
+        ]
+        # not fun but stuff used during build may be using symbols from
+        # a newer version of libcxx so we need to point it to bootstrap
+        tool_flags["LDFLAGS"] += [
+            "--ld-path=/usr/lib/llvm-bootstrap/bin/ld.lld",
+            "-L/usr/lib/llvm-bootstrap/lib",
+        ]
+        # this so it resolves at runtime too (e.g. -tblgen runs)
+        make_build_env = {"LD_LIBRARY_PATH": "/usr/lib/llvm-bootstrap/lib"}
     else:
         configure_args += ["-DLLVM_ENABLE_LLD=ON"]
+        # don't build flang/mlir for stage 1 to save time
+        if self.stage >= 2:
+            hostmakedepends += ["llvm", "clang-tools-extra", "mlir"]
 else:
     configure_args += [
         "-DLLVM_ENABLE_LLD=ON",
@@ -167,7 +166,7 @@ def init_configure(self):
         self.configure_args += ["-DLLVM_ENABLE_LTO=Thin"]
 
     if not self.profile().cross:
-        if self.stage >= 2:
+        if self.stage > 0:
             self.configure_args += [
                 f"-DCMAKE_C_COMPILER={self.chroot_cwd / 'boot-clang'}",
                 f"-DCMAKE_CXX_COMPILER={self.chroot_cwd / 'boot-clang++'}",
@@ -202,11 +201,9 @@ def configure(self):
             outp.symlink_to(f"/usr/lib/llvm-bootstrap/bin/{f}")
             continue
         with open(outp, "w") as outf:
-            outf.write(
-                f"""#!/bin/sh
+            outf.write(f"""#!/bin/sh
 exec /usr/bin/ccache /usr/lib/llvm-bootstrap/bin/{f} "$@"
-"""
-            )
+""")
         outp.chmod(0o755)
 
     cmake.configure(
@@ -424,9 +421,9 @@ def _(self):
         "usr/bin/scan-*",
         "usr/lib/libear",
         "usr/lib/libscanbuild",
-        "usr/libexec/analyze-*",
-        "usr/libexec/*analyzer",
-        "usr/libexec/intercept-*",
+        "usr/lib/analyze-*",
+        "usr/lib/*analyzer",
+        "usr/lib/intercept-*",
         "usr/share/scan-*",
         "usr/share/man/man1/scan-build.1",
     ]

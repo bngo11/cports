@@ -1,9 +1,7 @@
 pkgname = "kdesu"
-pkgver = "6.23.0"
+pkgver = "6.29.0"
 pkgrel = 0
 build_style = "cmake"
-# XXX drop libexec
-configure_args = ["-DCMAKE_INSTALL_LIBEXECDIR=/usr/lib"]
 hostmakedepends = ["cmake", "extra-cmake-modules", "gettext", "ninja"]
 makedepends = [
     "kconfig-devel",
@@ -14,9 +12,9 @@ makedepends = [
 ]
 pkgdesc = "KDE Framework for running commands as root"
 license = "GPL-2.0-only"
-url = "https://api.kde.org/frameworks/kdesu/html"
+url = "https://community.kde.org/Frameworks"
 source = f"$(KDE_SITE)/frameworks/{pkgver[: pkgver.rfind('.')]}/kdesu-{pkgver}.tar.xz"
-sha256 = "699fbd16fa2b5bb9a40d56ba020c71e292701c6a09314e0123c04a86e2c5c8b2"
+sha256 = "9c128248f6259ed8f6be8ab9fd670ab10efa9ab6b500429b98f7df25d169c312"
 hardening = ["vis"]
 
 

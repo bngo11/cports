@@ -1,6 +1,6 @@
 pkgname = "wireguard-tools"
-pkgver = "1.0.20250521"
-pkgrel = 0
+pkgver = "1.0.20260223"
+pkgrel = 2
 build_style = "makefile"
 make_dir = "src"
 make_install_args = [
@@ -15,7 +15,7 @@ pkgdesc = "Next generation secure network tunnel - tools for configuration"
 license = "GPL-2.0-only"
 url = "https://www.wireguard.com"
 source = f"https://git.zx2c4.com/wireguard-tools/snapshot/wireguard-tools-{pkgver}.tar.xz"
-sha256 = "b6f2628b85b1b23cc06517ec9c74f82d52c4cdbd020f3dd2f00c972a1782950e"
+sha256 = "af459827b80bfd31b83b08077f4b5843acb7d18ad9a33a2ef532d3090f291fbf"
 tool_flags = {
     "CFLAGS": ['-DRUNSTATEDIR="/run"'],
 }
@@ -28,7 +28,7 @@ def post_install(self):
     self.install_tmpfiles(self.files_path / "tmpfiles.conf")
     self.install_file(
         self.files_path / "wg-quick-all.sh",
-        "usr/libexec",
+        "usr/lib",
         mode=0o755,
         name="wg-quick-all",
     )
@@ -48,7 +48,7 @@ def _(self):
     return [
         "usr/lib/dinit.d/wg-quick-all",
         "usr/bin/wg-quick",
-        "usr/libexec/wg-quick-all",
+        "usr/lib/wg-quick-all",
         "usr/share/bash-completion/**/wg-quick",
         "usr/share/man/man?/wg-quick.?",
     ]

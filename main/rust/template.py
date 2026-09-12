@@ -1,5 +1,5 @@
 pkgname = "rust"
-pkgver = "1.94.1"
+pkgver = "1.98.0"
 pkgrel = 0
 hostmakedepends = [
     "cargo-bootstrap",
@@ -29,7 +29,7 @@ pkgdesc = "Rust programming language"
 license = "MIT OR Apache-2.0"
 url = "https://rust-lang.org"
 source = f"https://static.rust-lang.org/dist/rustc-{pkgver}-src.tar.xz"
-sha256 = "174fce10ce012317ca995810296d8af199318838180b03d68a853e0f02d4b571"
+sha256 = "271fa73d8174f53d713c46a8310da7bf7cfdcfb8b7cfd1c2b74b84a83ae9fb1e"
 tool_flags = {
     "RUSTFLAGS": [
         # make the std debugging symbols point to rust-src
@@ -52,8 +52,6 @@ options = ["!check", "!lto"]
 if self.profile().cross:
     hostmakedepends += ["rust"]
     env["PKG_CONFIG_ALLOW_CROSS"] = "1"
-elif self.current_target == "custom:bootstrap":
-    hostmakedepends += ["rust", "xz"]
 else:
     hostmakedepends += ["rust-bootstrap"]
 
@@ -65,7 +63,7 @@ if self.current_target == "custom:bootstrap":
     #
     # since there is just one static switch, we need static llvm
     # for both host and target rustc builds
-    hostmakedepends += ["llvm-devel-static"]
+    hostmakedepends += ["llvm-devel-static", "xz"]
     makedepends += ["llvm-devel-static"]
     # avoid debug cflags and so on for vendor libs
     options += ["!debug"]
@@ -82,17 +80,16 @@ def post_patch(self):
     cargo.clear_vendor_checksums(self, "libc-0.2.169")
     cargo.clear_vendor_checksums(self, "libc-0.2.171")
     cargo.clear_vendor_checksums(self, "libc-0.2.172")
-    cargo.clear_vendor_checksums(self, "libc-0.2.174")
-    cargo.clear_vendor_checksums(self, "libc-0.2.175")
-    cargo.clear_vendor_checksums(self, "libc-0.2.177")
-    cargo.clear_vendor_checksums(self, "libc-0.2.178")
+    cargo.clear_vendor_checksums(self, "libc-0.2.183")
+    cargo.clear_vendor_checksums(self, "libc-0.2.184")
+    cargo.clear_vendor_checksums(self, "libc-0.2.185")
+    cargo.clear_vendor_checksums(self, "libc-0.2.186")
     cargo.clear_vendor_checksums(self, "cc-1.2.0")
     cargo.clear_vendor_checksums(self, "cc-1.2.13")
     cargo.clear_vendor_checksums(self, "cc-1.2.16")
     cargo.clear_vendor_checksums(self, "cc-1.2.19")
     cargo.clear_vendor_checksums(self, "cc-1.2.20")
     cargo.clear_vendor_checksums(self, "cc-1.2.28")
-    cargo.clear_vendor_checksums(self, "cc-1.2.38")
 
 
 def configure(self):
@@ -152,8 +149,7 @@ def configure(self):
     # we need to ensure to link to these otherwise we get undefined refs
     if _llvm_shared == "false":
         with open(self.cwd / "compiler/rustc_llvm/src/lib.rs", "a") as f:
-            f.write(
-                """
+            f.write("""
 #[link(name = "ffi")]
 unsafe extern "C" {}
 #[link(name = "z")]
@@ -162,17 +158,15 @@ unsafe extern "C" {}
 unsafe extern "C" {}
 #[link(name = "ncursesw")]
 unsafe extern "C" {}
-"""
-            )
+""")
 
     with self.profile("host") as hpf:
         host_profile = hpf
 
     # check src/bootstrap/src/utils/change_tracker.rs
     with open(self.cwd / "bootstrap.toml", "w") as cfg:
-        cfg.write(
-            f"""
-change-id = 148671
+        cfg.write(f"""
+change-id = 158169
 
 [llvm]
 ninja = false
@@ -252,12 +246,10 @@ linker = '{self.get_tool("CC", target="host")}'
 llvm-config = '/usr/bin/llvm-config'
 crt-static = false
 
-"""
-        )
+""")
         # cross-target definition if used
         if tgt_profile.cross:
-            cfg.write(
-                f"""
+            cfg.write(f"""
 [target.{tgt_profile.triplet}]
 
 cc = '{self.get_tool("CC")}'
@@ -267,12 +259,10 @@ ranlib = '/usr/bin/llvm-ranlib'
 linker = '{self.get_tool("CC")}'
 llvm-config = '/usr/bin/llvm-config'
 crt-static = false
-"""
-            )
+""")
         # wasm targets for non-bootstrap
         if self.current_target != "custom:bootstrap":
-            cfg.write(
-                """
+            cfg.write("""
 [target.wasm32-unknown-unknown]
 
 sanitizers = false
@@ -295,8 +285,7 @@ wasi-root = '/usr/wasm32-unknown-wasi'
 sanitizers = false
 profiler = false
 wasi-root = '/usr/wasm32-unknown-wasi'
-"""
-            )
+""")
 
 
 def build(self):
@@ -438,6 +427,15 @@ def install(self):
     self.log("cleaning up tools...")
     trip = self.profile().triplet
     self.uninstall(f"usr/lib/rustlib/{trip}/bin")
+
+    # libexec fixup
+    match self.profile().arch:
+        case "aarch64" | "ppc64" | "ppc64le" | "x86_64":
+            self.rename(
+                "usr/libexec/rust-analyzer-proc-macro-srv",
+                "usr/lib/rust-analyzer-proc-macro-srv",
+                relative=False,
+            )
 
     # usr/lib stuff should be symlinks into rustlib
     self.log("relinking rustlibs...")

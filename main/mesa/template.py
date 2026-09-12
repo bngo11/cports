@@ -1,5 +1,5 @@
 pkgname = "mesa"
-pkgver = "26.0.4"
+pkgver = "26.2.2"
 pkgrel = 0
 build_style = "meson"
 configure_args = [
@@ -66,12 +66,13 @@ provider_priority = 999
 pkgdesc = "Mesa 3D Graphics Library"
 license = "MIT"
 url = "https://www.mesa3d.org"
-source = f"https://mesa.freedesktop.org/archive/mesa-{pkgver.replace('_', '-')}.tar.xz"
-sha256 = "6d91541e086f29bb003602d2c81070f2be4c0693a90b181ca91e46fa3953fe78"
+source = f"https://archive.mesa3d.org/mesa-{pkgver.replace('_', '-')}.tar.xz"
+sha256 = "eeb29ca7e56cfaa8e8a79538dcf834e3b18e501c31bef5145e959ea437cc4216"
 # lots of issues in swrast and so on
 hardening = ["!int"]
 # cba to deal with cross patching nonsense
-options = ["!cross", "linkundefver", "fullrustflags"]
+# they banned lto upstream lol
+options = ["!cross", "linkundefver", "fullrustflags", "!lto"]
 
 _gallium_drivers = []
 _vulkan_drivers = []
@@ -217,7 +218,7 @@ def post_patch(self):
 
 
 def init_configure(self):
-    ljobs = 4 if self.make_jobs >= 4 else self.make_jobs
+    ljobs = min(4, self.make_jobs)
     # mesa links a lot of big .so's at once so ensure there is not more than four
     self.configure_args += [f"-Dbackend_max_links={ljobs}"]
 
@@ -290,6 +291,7 @@ def _(self):
 def _(self):
     self.pkgdesc = "Mesa implementation of OpenCL"
     self.depends += [self.parent, "libclc"]
+    self.options = ["etcfiles"]
 
     return [
         "etc/OpenCL",

@@ -1,5 +1,5 @@
 pkgname = "blender"
-pkgver = "5.0.1"
+pkgver = "5.1.2"
 pkgrel = 2
 build_style = "cmake"
 configure_args = [
@@ -18,6 +18,8 @@ configure_args = [
     "-DWITH_PYTHON_INSTALL_REQUESTS=OFF",
     "-DWITH_PYTHON_INSTALL_ZSTANDARD=OFF",
     "-DWITH_SYSTEM_EIGEN3=ON",
+    "-DWITH_SYSTEM_GFLAGS=ON",
+    "-DWITH_SYSTEM_GLOG=ON",
     "-DWITH_SYSTEM_FREETYPE=ON",
     "-DWITH_SYSTEM_LZO=ON",
 ]
@@ -31,10 +33,12 @@ hostmakedepends = [
 makedepends = [
     "alembic-devel",
     "boost-devel",
+    "ceres-devel",
     "clang-devel",
     "eigen",
     "ffmpeg-devel",
     "fftw-devel",
+    "fmt-devel",
     "freetype-devel",
     "gmp-gmpxx-devel",
     "libepoxy-devel",
@@ -46,6 +50,7 @@ makedepends = [
     "libsndfile-devel",
     "libtiff-devel",
     "libwebp-devel",
+    "libxkbcommon-devel",
     "llvm-devel",
     "onetbb-devel",
     "openal-soft-devel",
@@ -60,10 +65,11 @@ makedepends = [
     "potrace-devel",
     "pugixml-devel",
     "python-devel",
-    "python-numpy",
+    "python-numpy-devel",
     "shaderc-devel",
     "vulkan-loader-devel",
     "wayland-devel",
+    "wayland-protocols",
     "zstd-devel",
 ]
 depends = [
@@ -75,7 +81,7 @@ pkgdesc = "3D creation suite"
 license = "GPL-2.0-or-later"
 url = "https://www.blender.org"
 source = f"https://download.blender.org/source/blender-{pkgver}.tar.xz"
-sha256 = "0077a41f59843433154fdf2d8aeb6c43f6bf6951cd46987305e67f89cb4f1fbf"
+sha256 = "aedfd030231979b629b18049d93b92fd2794952ca0cf39ebde54e84438bed05a"
 tool_flags = {
     "CFLAGS": ["-D_GNU_SOURCE"],
     # guilty until proven innocent

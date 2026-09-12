@@ -4,7 +4,6 @@ pkgrel = 0
 build_style = "meson"
 # manpages fail to generate
 configure_args = [
-    "--libexecdir=/usr/lib",  # XXX drop libexec
     "-Ddaemon_user=_colord",
     "-Dsystemd=false",
     "-Dargyllcms_sensor=false",
@@ -47,9 +46,9 @@ if self.profile().cross:
 
 
 def post_install(self):
-    self.install_service("^/colord")
-    self.install_sysusers("^/sysusers.conf")
-    self.install_tmpfiles("^/tmpfiles.conf")
+    self.install_service(self.files_path / "colord")
+    self.install_sysusers(self.files_path / "sysusers.conf")
+    self.install_tmpfiles(self.files_path / "tmpfiles.conf")
 
 
 @subpackage("colord-libs")

@@ -1,9 +1,7 @@
 pkgname = "kwin"
-pkgver = "6.6.1"
-pkgrel = 0
+pkgver = "6.7.4"
+pkgrel = 1
 build_style = "cmake"
-# XXX drop libexec
-configure_args = ["-DCMAKE_INSTALL_LIBEXECDIR=/usr/lib"]
 make_check_args = [
     "-E",
     "(kwin-testClientMachine"  # initTestCase() segfaults in libc.so after 5s
@@ -17,6 +15,20 @@ make_check_args = [
     + "|kwin-testFifo"  # always fails on 24Hz when run with other tests, works alone
     + "|kwin-testXwaylandInput"  # flaky testPointerEnterLeaveSsd() '!window->readyForPainting()' returned FALSE
     + "|kwin-testPointerInput"  # flaky segfaults of testEdgeBarrier subtests on loongarch64
+    + "|kwin-testDnd"  # tabletDrag fails
+    + "|kwin-testGameController"  # no uinput
+    + "|kwin-testSceneOpenGL"  # no render node
+    + "|kwin-testSceneOpenGLES"  # ditto
+    + "|kwin-testDontCrashReinitializeCompositor"  # ditto
+    + "|kwin-testDontCrashEmptyDeco"  # ditto
+    + "|kwin-testDontCrashAuroraeDestroyDeco"  # ditto
+    + "|kwin-testScreencasting"  # ditto
+    + "|kwin-testSlidingPopups"  # ditto
+    + "|kwin-testScriptedEffects"  # ditto
+    + "|kwin-testToplevelOpenCloseAnimation"  # ditto
+    + "|kwin-testDesktopSwitchingAnimation"  # ditto
+    + "|kwin-testMinimizeAnimation"  # ditto
+    + "|kwin-testMaximizeAnimation"  # ditto
     + "|^kwayland-testServerSideDecoration$"  # Tried to add event to destroyed queue
     + "|^kwayland-testDataControlInterface$"  # An issue with ext_data_control_offer_v1 metatype?
     + "|^kwin-testLockScreen$"  # broken since 296b791614 (v6.5.0)
@@ -24,6 +36,7 @@ make_check_args = [
     + "|^kwin-testFractionalRepaint$"  # testBottomRow() segfault in cbuild chroot, passes on host
     + "|^kwin-testXwaylandSelection$"  # primarySelectionX11ToWayland* subtests fail only on builders with 'seatPrimarySelectionChangedSpy.wait()' returned FALSE
     + "|^kwin-testSelection$"  # KWin::SelectionTest::unsetSupersededSelection() '!secondDataDeviceSelectionClearedSpy.wait(100)' returned FALSE
+    + "|kcm_kwindecoration_smoketest"  # ???
     + ")",
     # parallel tests cause a bunch of flakes
     "-j1",
@@ -73,6 +86,7 @@ makedepends = [
     "libplasma-devel",
     "libqaccessibilityclient-devel",
     "libxcvt-devel",
+    "milou",
     "plasma-activities-devel",
     "plasma-wayland-protocols",
     "qt6-qt5compat-devel",
@@ -85,7 +99,7 @@ makedepends = [
     "wayland-protocols",
     "xcb-util-devel",
 ]
-depends = ["aurorae", "hwdata", "qt6-qtmultimedia", "xwayland"]
+depends = ["aurorae", "hwdata", "milou", "qt6-qtmultimedia", "xwayland"]
 checkdepends = ["breeze", "dbus", "mesa-demos-core", "xwayland-run", *depends]
 pkgdesc = "KDE Wayland compositor"
 license = (
@@ -93,7 +107,7 @@ license = (
 )
 url = "https://invent.kde.org/plasma/kwin"
 source = f"$(KDE_SITE)/plasma/{'.'.join(pkgver.split('.')[0:3])}/kwin-{pkgver}.tar.xz"
-sha256 = "cc3c2a825df1a6fe40a5294dc1a5fb0b9d61e4255c89356fdd69b6cb334670eb"
+sha256 = "db7a7dba71aaca1e5218733b80f90a998d84e2ab36e4d62d0e3ea00376c5802d"
 file_modes = {
     "usr/bin/kwin_wayland": ("root", "root", 0o755),
 }

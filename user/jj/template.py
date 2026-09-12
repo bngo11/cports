@@ -1,21 +1,18 @@
 pkgname = "jj"
-pkgver = "0.38.0"
+pkgver = "0.44.0"
 pkgrel = 0
 build_style = "cargo"
 prepare_after_patch = True
 hostmakedepends = ["cargo-auditable"]
 makedepends = ["rust-std"]
-checkdepends = ["git", "openssh"]
+checkdepends = ["bash", "git", "openssh"]
 pkgdesc = "Git-compatible VCS frontend"
 license = "Apache-2.0"
-url = "https://martinvonz.github.io/jj"
+url = "https://www.jj-vcs.dev"
 source = f"https://github.com/martinvonz/jj/archive/refs/tags/v{pkgver}.tar.gz"
-sha256 = "f28e280c01abb11aa9ff5ae7a35df3e9822fd37a013b6c1d79d1453a5f21f5ad"
+sha256 = "cd72ac1040c93d474dcafd8dd7f8d91d7407f9358bc9ffd4a6b72f4017112eab"
 # generates completions with host binary
 options = ["!cross"]
-
-if self.profile().arch in ["loongarch64"]:
-    broken = "outdated nix crate, can't update"
 
 
 def post_prepare(self):
@@ -24,7 +21,7 @@ def post_prepare(self):
     # done separately because we need to patch lockfile before vendoring :/
     patch.patch(self, [self.files_path / "bser.patch"])
 
-    cargo.clear_vendor_checksums(self, "serde_bser")
+    cargo.clear_vendor_checksums(self, "serde_bser-0.4.0")
 
 
 def post_build(self):

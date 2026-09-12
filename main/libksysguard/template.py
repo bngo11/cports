@@ -1,9 +1,7 @@
 pkgname = "libksysguard"
-pkgver = "6.6.1"
+pkgver = "6.7.4"
 pkgrel = 0
 build_style = "cmake"
-# XXX drop libexec
-configure_args = ["-DCMAKE_INSTALL_LIBEXECDIR=/usr/lib"]
 make_check_env = {"QT_QPA_PLATFORM": "offscreen"}
 hostmakedepends = [
     "cmake",
@@ -36,9 +34,9 @@ makedepends = [
 ]
 pkgdesc = "KDE system monitor library"
 license = "LGPL-2.1-or-later AND (GPL-2.0-only OR GPL-3.0-only)"
-url = "https://api.kde.org/plasma/libksysguard/html"
+url = "https://kde.org/plasma-desktop"
 source = f"$(KDE_SITE)/plasma/{pkgver}/libksysguard-{pkgver}.tar.xz"
-sha256 = "633db72922d2c7f8a86e533cedec2695212e61981a885f1df07c2eeb72f4312c"
+sha256 = "3882fe735a00113d6fc754d5d425703bab42b6bbbff16788e95adb4ef11bb04c"
 file_modes = {
     "usr/lib/ksysguard/ksgrd_network_helper": ("root", "root", 0o755),
 }

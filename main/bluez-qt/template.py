@@ -1,7 +1,12 @@
 pkgname = "bluez-qt"
-pkgver = "6.23.0"
+pkgver = "6.29.0"
 pkgrel = 0
 build_style = "cmake"
+# needs a "real" environment?
+make_check_args = [
+    "-E",
+    "bluezqt-(managertest|adaptertest|mediatest|leadvertisingmanagertest|gattmanagertest|qmltests)",
+]
 make_check_env = {"QT_QPA_PLATFORM": "offscreen"}
 make_check_wrapper = ["dbus-run-session"]
 hostmakedepends = ["cmake", "extra-cmake-modules", "ninja", "pkgconf"]
@@ -10,9 +15,9 @@ checkdepends = ["dbus"]
 depends = ["bluez"]
 pkgdesc = "Qt wrapper for Bluez 5 D-Bus API"
 license = "LGPL-2.1-or-later"
-url = "https://api.kde.org/frameworks/bluez-qt/html"
+url = "https://community.kde.org/Frameworks"
 source = f"$(KDE_SITE)/frameworks/{pkgver[: pkgver.rfind('.')]}/bluez-qt-{pkgver}.tar.xz"
-sha256 = "37f4c0d8ae8093f8b44d6cb50500c7ba9ce59a2980181cc83e88fa7c03062bef"
+sha256 = "15e2ae85d0e3e205cd17c3c5f079d2263abc4a341fbf223b2561510f69382a2b"
 hardening = ["vis"]
 
 

@@ -1,5 +1,5 @@
 pkgname = "isoimagewriter"
-pkgver = "25.12.2"
+pkgver = "26.08.0"
 pkgrel = 0
 build_style = "cmake"
 hostmakedepends = [
@@ -10,13 +10,13 @@ hostmakedepends = [
     "pkgconf",
 ]
 makedepends = [
-    "gpgme-qt-devel",
     "karchive-devel",
     "kcoreaddons-devel",
     "kcrash-devel",
     "ki18n-devel",
     "kiconthemes-devel",
     "kwidgetsaddons-devel",
+    "qgpgme-devel",
     "qt6-qtbase-devel",
     "solid-devel",
 ]
@@ -26,4 +26,4 @@ url = "https://apps.kde.org/isoimagewriter"
 source = (
     f"$(KDE_SITE)/release-service/{pkgver}/src/isoimagewriter-{pkgver}.tar.xz"
 )
-sha256 = "a7a1f83c481f5829c76dab447284778ef492578674f924a7274f4a304f694cde"
+sha256 = "548edc92eb4496a22e0252d4dce09d72de3bef9ba1685cd3c7a9ba1510d56f44"

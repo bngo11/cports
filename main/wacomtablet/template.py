@@ -1,6 +1,6 @@
 pkgname = "wacomtablet"
-pkgver = "6.6.1"
-pkgrel = 0
+pkgver = "6.7.4"
+pkgrel = 1
 build_style = "cmake"
 # X*: fail outside x11
 make_check_args = ["-E", "(XInputAdaptor|XsetWacomAdaptor|DBusTabletService)"]
@@ -37,4 +37,4 @@ pkgdesc = "GUI configurator for Wacom tablets"
 license = "GPL-2.0-or-later"
 url = "https://invent.kde.org/plasma/wacomtablet"
 source = f"$(KDE_SITE)/plasma/{pkgver}/wacomtablet-{pkgver}.tar.xz"
-sha256 = "5a8b6917d47f25cf1b956d6d28d5eea709fb4e597e4e75a655db0ef28a3a0847"
+sha256 = "236c67147b2da701e42bd9e3ea99cc444e0615393d020e029083c04acd586569"

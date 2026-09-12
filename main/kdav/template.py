@@ -1,5 +1,5 @@
 pkgname = "kdav"
-pkgver = "6.23.0"
+pkgver = "6.29.0"
 pkgrel = 0
 build_style = "cmake"
 # hangs forever
@@ -22,11 +22,11 @@ makedepends = [
 checkdepends = ["xwayland-run"]
 pkgdesc = "KDE DAV library"
 license = "LGPL-2.0-or-later"
-url = "https://api.kde.org/frameworks/kdav/html"
+url = "https://community.kde.org/Frameworks"
 source = (
     f"$(KDE_SITE)/frameworks/{pkgver[: pkgver.rfind('.')]}/kdav-{pkgver}.tar.xz"
 )
-sha256 = "97681c03ad199f1c91ff9535d460afb8b9304cb779f74251c603544b80c36926"
+sha256 = "0a4d5c21bace495004571b626a14ae864362a069caea153d8a149a911524cd08"
 
 
 @subpackage("kdav-devel")

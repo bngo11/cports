@@ -1,18 +1,14 @@
 pkgname = "networkmanager"
-pkgver = "1.54.1"
+pkgver = "1.58.0"
 pkgrel = 0
 build_style = "meson"
 configure_args = [
-    "--libexecdir=/usr/lib",  # XXX drop libexec
     "-Dsystemd_journal=false",
     "-Dselinux=false",
     "-Dovs=false",
     "-Dqt=false",
     "-Dsession_tracking_consolekit=false",
-    "-Dmodify_system=true",
     "-Diwd=true",
-    # we only support dhcpcd here
-    "-Ddhclient=/usr/bin/dhclient",
     "-Ddhcpcd=/usr/bin/dhcpcd",
     "-Diptables=/usr/bin/iptables",
     "-Dmodprobe=/usr/bin/modprobe",
@@ -39,9 +35,11 @@ configure_args = [
     "-Dcrypto=nss",
     "-Dreadline=libedit",
     "-Dtests=no",  # not ran
+    "-Dsystemdsystemgeneratordir=no",
 ]
 hostmakedepends = [
     "bash",
+    "bpftool",
     "docbook-xsl-nons",
     "gettext",
     "glib-devel",
@@ -63,6 +61,7 @@ makedepends = [
     "elogind-devel",
     "gobject-introspection-devel",
     "jansson-devel",
+    "libbpf-devel",
     "libedit-devel",
     "libgudev-devel",
     "libndp-devel",
@@ -92,11 +91,10 @@ pkgdesc = "Network management daemon"
 license = "GPL-2.0-or-later AND LGPL-2.1-or-later"
 url = "https://gitlab.freedesktop.org/NetworkManager/NetworkManager"
 source = f"{url}/-/archive/{pkgver}/NetworkManager-{pkgver}.tar.gz"
-sha256 = "3bec7f01698e416c58fe823d042de87fdc0e5ddf54d1871a8b65216070eb9a93"
-# some tests use sysfs, + LD_BIND_NOW in tests does not work with our musl env
-options = ["!check", "!cross", "linkundefver"]
-
+sha256 = "b564614be46fafe6654a497836c48bdbd411ed14d34a525dbf0cd549e33b4cda"
 tool_flags = {"CFLAGS": ["-Wno-incompatible-function-pointer-types"]}
+# some tests use sysfs, + LD_BIND_NOW in tests does not work with our musl env
+options = ["etcfiles", "!check", "!cross", "linkundefver"]
 
 
 def post_install(self):

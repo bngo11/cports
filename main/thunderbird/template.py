@@ -1,5 +1,5 @@
 pkgname = "thunderbird"
-pkgver = "149.0.1"
+pkgver = "155.0"
 pkgrel = 0
 hostmakedepends = [
     "automake",
@@ -16,7 +16,6 @@ hostmakedepends = [
     "python",
     "rust",
     "wasi-sdk",
-    "xserver-xorg-xvfb",
     "zip",
 ]
 makedepends = [
@@ -58,7 +57,7 @@ pkgdesc = "Thunderbird mail client"
 license = "GPL-3.0-only AND LGPL-2.1-only AND LGPL-3.0-only AND MPL-2.0"
 url = "https://www.thunderbird.net"
 source = f"$(MOZILLA_SITE)/thunderbird/releases/{pkgver}/source/thunderbird-{pkgver}.source.tar.xz"
-sha256 = "f6dd8d14bbb76f339e856454c7ffa27db2b7f07c47f9e61c2f34acd9d556f53c"
+sha256 = "116a5eff70f3405f62247960ac6ca7c781ae99f313c5fc499c9c93b21f28b242"
 debug_level = 1  # defatten, especially with LTO
 tool_flags = {
     "LDFLAGS": ["-Wl,-rpath=/usr/lib/thunderbird", "-Wl,-z,stack-size=2097152"]
@@ -88,7 +87,9 @@ if self.profile().arch == "riscv64":
 
 
 def post_extract(self):
-    self.cp("^/stab.h", "toolkit/crashreporter/google-breakpad/src")
+    self.cp(
+        self.files_path / "stab.h", "toolkit/crashreporter/google-breakpad/src"
+    )
 
 
 def post_patch(self):
@@ -178,65 +179,6 @@ def configure(self):
     if self.has_lto():
         conf_opts += ["--enable-lto=cross"]
 
-    # PGO; tries to connect to the network, but maybe someday?
-    if False:
-        # configure for profiling
-        self.log("bootstrapping profile...")
-        with self.stamp("profile_configure") as s:
-            s.check()
-            self.log("configuring profile build...")
-            self.do(
-                "./mach",
-                "configure",
-                *conf_opts,
-                "--enable-profile-generate=cross",
-            )
-        # do the profiling build
-        with self.stamp("profile_build") as s:
-            s.check()
-            self.log("building profile build...")
-            self.do("./mach", "build", "--priority", "normal")
-        # package it
-        with self.stamp("profile_package") as s:
-            s.check()
-            self.log("packaging profile build...")
-            self.do("./mach", "package")
-        # generate the profile data
-        with self.stamp("profile_generate") as s:
-            s.check()
-            self.log("generating profile...")
-            for d in self.cwd.glob("obj-*"):
-                ldp = self.chroot_cwd / d.name / "dist/thunderbird"
-            self.do(
-                "dbus-run-session",
-                "--",
-                "xvfb-run",
-                "-s",
-                "-screen 0 1920x1080x24",
-                "./mach",
-                "python",
-                "./build/pgo/profileserver.py",
-                env={
-                    "HOME": str(self.chroot_cwd),
-                    "JARLOG_FILE": str(self.chroot_cwd / "jarlog"),
-                    "LD_LIBRARY_PATH": ldp,
-                    "LIBGL_ALWAYS_SOFTWARE": "1",
-                    "LLVM_PROFDATA": "llvm-profdata",
-                    "XDG_RUNTIME_DIR": "/tmp",
-                },
-            )
-        # clean up build dir
-        with self.stamp("profile_clobber") as s:
-            s.check()
-            self.log("cleaning up profile build...")
-            self.do("./mach", "clobber", "objdir")
-        # and finally make use of this for real configure
-        conf_opts += [
-            "--enable-profile-use=cross",
-            f"--with-pgo-profile-path={self.chroot_cwd / 'merged.profdata'}",
-            f"--with-pgo-jarlog={self.chroot_cwd / 'jarlog'}",
-        ]
-
     self.log("configuring final thunderbird...")
     self.do("./mach", "configure", *conf_opts)
 
@@ -252,9 +194,16 @@ def install(self):
         env={"DESTDIR": str(self.chroot_destdir)},
     )
 
-    self.install_file("^/vendor.js", "usr/lib/thunderbird/defaults/preferences")
-    self.install_file("^/distribution.ini", "usr/lib/thunderbird/distribution")
-    self.install_file("^/thunderbird.desktop", "usr/share/applications")
+    self.install_file(
+        self.files_path / "vendor.js",
+        "usr/lib/thunderbird/defaults/preferences",
+    )
+    self.install_file(
+        self.files_path / "distribution.ini", "usr/lib/thunderbird/distribution"
+    )
+    self.install_file(
+        self.files_path / "thunderbird.desktop", "usr/share/applications"
+    )
 
     # icons
     for sz in [16, 22, 24, 32, 48, 128, 256]:

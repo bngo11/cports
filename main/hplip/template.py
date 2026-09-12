@@ -1,6 +1,6 @@
 pkgname = "hplip"
 pkgver = "3.25.6"
-pkgrel = 0
+pkgrel = 3
 build_style = "gnu_configure"
 configure_args = [
     "--disable-doc-build",
@@ -41,9 +41,9 @@ sha256 = "a6af314a7af0572f2ab6967b2fe68760e64d74628ef0e6237f8504d81047edbe"
 # nuh uh
 hardening = ["!vis"]
 # TODO: probably ignores CC
-options = ["!cross"]
+options = ["etcfiles", "!cross"]
 
-tool_flags = {"CFLAGS": ["-D_GNU_SOURCE"]}
+tool_flags = {"CFLAGS": ["-D_GNU_SOURCE", "-Wno-incompatible-pointer-types"]}
 
 
 def post_extract(self):
@@ -62,11 +62,11 @@ def post_install(self):
     # rename default dll.conf that conflicts with sane-backends to own name,
     # loads hpaio
     self.rename("etc/sane.d/dll.conf", "dll.d/hpaio")
-    self.rename("etc/udev", "usr/lib/udev")
+    self.rename("etc/udev", "usr/lib/udev", relative=False)
 
     # move elfs to libexec
     for f in ["locatedriver", "dat2drv"]:
         self.rename(
-            f"usr/share/hplip/{f}", f"usr/libexec/hplip/{f}", relative=False
+            f"usr/share/hplip/{f}", f"usr/lib/hplip/{f}", relative=False
         )
-        self.install_link(f"usr/share/hplip/{f}", f"../../libexec/hplip/{f}")
+        self.install_link(f"usr/share/hplip/{f}", f"../../lib/hplip/{f}")

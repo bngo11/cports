@@ -1,9 +1,7 @@
 pkgname = "kauth"
-pkgver = "6.23.0"
+pkgver = "6.29.0"
 pkgrel = 0
 build_style = "cmake"
-# XXX drop libexec
-configure_args = ["-DCMAKE_INSTALL_LIBEXECDIR=/usr/lib"]
 make_check_env = {"QT_QPA_PLATFORM": "offscreen"}
 make_check_wrapper = ["dbus-run-session"]
 hostmakedepends = ["cmake", "extra-cmake-modules", "ninja"]
@@ -19,7 +17,7 @@ pkgdesc = "KDE Execute actions as privileged user"
 license = "LGPL-2.1-or-later"
 url = "https://develop.kde.org/docs/features/kauth"
 source = f"$(KDE_SITE)/frameworks/{pkgver[: pkgver.rfind('.')]}/kauth-{pkgver}.tar.xz"
-sha256 = "6600699cbfec5a26c346a26504d505a7580c4aa4a6e25b8d479bbbf8bfeb5e9a"
+sha256 = "40a7ec156aa1842216e1377b327efe173a737c0e6434b1dda66d2b098a307824"
 hardening = ["vis"]
 
 
